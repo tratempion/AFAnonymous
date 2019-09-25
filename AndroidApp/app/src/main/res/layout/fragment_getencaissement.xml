@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:divider="?android:listDivider"
+    android:dividerPadding="2.5dp"
+    android:showDividers="end">
+
+    <HorizontalScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" >
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/societeTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Societe"
+                        android:textColor="@color/colorPrimary"
+                        android:textAppearance="?attr/textAppearanceListItemSecondary" />
+
+                    <TextView
+                        android:id="@+id/societe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="societe"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/compteTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Compte"
+                        android:textColor="@color/colorPrimary"
+                        android:textAppearance="?attr/textAppearanceListItemSecondary" />
+
+                    <TextView
+                        android:id="@+id/compte"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="compte"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/banqueTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Banque"
+                        android:textColor="@color/colorPrimary"
+                        android:textAppearance="?attr/textAppearanceListItemSecondary" />
+
+                    <TextView
+                        android:id="@+id/banque"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="banque"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/totalHTTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Total HT (€)"
+                        android:textColor="@color/colorPrimary"
+                        android:textAppearance="?attr/textAppearanceListItemSecondary" />
+
+                    <TextView
+                        android:id="@+id/totalHT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="totalHT"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/totalTTCTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Total TTC (€)"
+                        android:textColor="@color/colorPrimary"
+                        android:textAppearance="?attr/textAppearanceListItemSecondary" />
+
+                    <TextView
+                        android:id="@+id/totalTTC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="totalTTC"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/totalTVATitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Total TVA (€)"
+                        android:textColor="@color/colorPrimary"
+                        android:textAppearance="?attr/textAppearanceListItemSecondary" />
+
+                    <TextView
+                        android:id="@+id/totalTVA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="totalTVA"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/dateReglementTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Date de Règlement"
+                        android:textColor="@color/colorPrimary"
+                        android:textAppearance="?attr/textAppearanceListItemSecondary" />
+
+                    <TextView
+                        android:id="@+id/dateReglement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="dateReglement"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/modePaiementTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Mode de Paiement"
+                        android:textColor="@color/colorPrimary"
+                        android:textAppearance="?attr/textAppearanceListItemSecondary" />
+
+                    <TextView
+                        android:id="@+id/modePaiement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="modePaiement"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/transfertCompteTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Transfert Compte"
+                        android:textColor="@color/colorPrimary"
+                        android:textAppearance="?attr/textAppearanceListItemSecondary" />
+
+                    <TextView
+                        android:id="@+id/transfertCompte"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="transfertCompte"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/dateAjoutTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Date d'Ajout"
+                        android:textColor="@color/colorPrimary"
+                        android:textAppearance="?attr/textAppearanceListItemSecondary" />
+
+                    <TextView
+                        android:id="@+id/dateAjout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="dateAjout"
+                        android:textAppearance="?attr/textAppearanceListItem" />
+
+                </LinearLayout>
+
+            </TableRow>
+
+        </TableLayout>
+
+    </HorizontalScrollView>
+
+</LinearLayout>

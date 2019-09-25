@@ -1,0 +1,8 @@
+qu'est ce que la colone Detail?
+comment fonctionne la colone est versement TVA?
+est ce que il est autoriser de corriger les erreur/incohérence depuis le tableau de bord?
+dans quelle mesure l'application doit etre logué?
+pour l'impression, est ce qu'il vaut mieux utiliser le fichier excel de base comme template, ou un custom?=> oui, essayer de reprendre le fichier de base
+un cas particulier pour les salaire? il y as une sous section total hors salaire dans le fichier "suivi d'execution" en bas =>oui ainsi que prestataire
+inclure tout les onglets actuel dans l'export excel?
+quid des notes de frais?

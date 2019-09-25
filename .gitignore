@@ -1,0 +1,46 @@
+################################################################################
+# Ce fichier .gitignore a été automatiquement créé par Microsoft(R) Visual Studio.
+################################################################################
+
+/HTML/node_modules
+/AfupeoAzureFunctionApp/.vs
+.vs/
+
+AfupeoAzureFunctionApp/AfupeoAzureFunctionApp/bin/
+
+AfupeoAzureFunctionApp/AfupeoAzureFunctionApp/obj/
+
+HTML/dist/
+
+HTML/package-lock\.json
+
+AfupeoAzureFunctionApp/DatabaseAfupeo/bin/
+
+AfupeoAzureFunctionApp/DatabaseAfupeo/obj/
+
+AfupeoAzureFunctionApp/DTO/bin/
+
+AfupeoAzureFunctionApp/DTO/obj/
+
+Suivie d'avancement/~\$Position\.xlsx
+
+AfupeoAzureFunctionApp/DAL/bin/
+
+AfupeoAzureFunctionApp/DAL/obj/
+
+*.user
+
+AfupeoAzureFunctionApp/DatabaseAfupeo/DatabaseAfupeo\.dbmdl
+
+AfupeoAzureFunctionApp/DatabaseAfupeo/DatabaseAfupeo\.jfm
+
+Suivie d'avancement/~\$Suivi exécution budgétaire\.xlsx
+
+AfupeoAzureFunctionApp/UnitTest/bin/
+
+AfupeoAzureFunctionApp/UnitTest/obj/
+
+
+ node_modules
+
+node_modules/

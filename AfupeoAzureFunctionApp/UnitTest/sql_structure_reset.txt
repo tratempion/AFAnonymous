@@ -1,0 +1,976 @@
+﻿
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Encaissement')
+ 	DROP TABLE Encaissement;
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Decaissement') 
+ 	DROP TABLE Decaissement;
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Mode_paiement') 
+ 	DROP TABLE Mode_paiement;
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Piece') 
+ 	DROP TABLE Piece;
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Societe') 
+ 	DROP TABLE Societe;
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Budget') 
+ 	DROP TABLE Budget;
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'sous_classification') 
+ 	DROP TABLE sous_classification;
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'crashReport') 
+ 	DROP TABLE crashReport;
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Classification') 
+ 	DROP TABLE Classification;
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'__RefactorLog') 
+ 	DROP TABLE __RefactorLog;
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'sysdiagrams') 
+ 	DROP TABLE sysdiagrams;
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_NAME = N'FK_Compte_Banque') 
+	ALTER TABLE Compte DROP CONSTRAINT FK_Compte_Banque;
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_NAME = N'FK_Banque_Compte') 
+	ALTER TABLE Banque DROP CONSTRAINT FK_Banque_Compte;
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Compte') 
+ 	DROP TABLE Compte;
+if exists  (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'Banque') 
+ 	DROP TABLE Banque;
+declare @procName varchar(500)
+declare cur cursor 
+
+for select [name] from sys.objects where type = 'p'
+open cur
+fetch next from cur into @procName
+while @@fetch_status = 0
+begin
+    exec('drop procedure [' + @procName + ']')
+    fetch next from cur into @procName
+end
+close cur
+deallocate cur
+/****** Object:  Table [dbo].[__RefactorLog]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[__RefactorLog](
+	[OperationKey] [uniqueidentifier] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[OperationKey] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Banque]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Banque](
+	[id] [uniqueidentifier] NOT NULL,
+	[name] [varchar](50) NOT NULL,
+	[default_account] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_Banque] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+ CONSTRAINT [AK_Name_Banque] UNIQUE NONCLUSTERED 
+(
+	[name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Budget]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Budget](
+	[id] [uniqueidentifier] NOT NULL,
+	[objectif] [money] NOT NULL,
+	[periode] [date] NOT NULL,
+	[id_sous_classification] [uniqueidentifier] NOT NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Classification]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Classification](
+	[id] [uniqueidentifier] NOT NULL,
+	[name] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_Classification] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+ CONSTRAINT [AK_Name_Classification] UNIQUE NONCLUSTERED 
+(
+	[name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Compte]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Compte](
+	[id] [uniqueidentifier] NOT NULL,
+	[id_banque] [uniqueidentifier] NULL,
+	[numero] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_Compte] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+ CONSTRAINT [AK_Name_Compte] UNIQUE NONCLUSTERED 
+(
+	[numero] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[crashReport]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[crashReport](
+	[date] [datetime] NULL,
+	[params] [varchar](500) NULL,
+	[data] [varchar](500) NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Decaissement]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Decaissement](
+	[id] [uniqueidentifier] NOT NULL,
+	[operation] [varchar](50) NOT NULL,
+	[id_compte] [uniqueidentifier] NOT NULL,
+	[id_mode_paiement] [uniqueidentifier] NULL,
+	[date_compta] [datetime2](7) NULL,
+	[date_operation] [datetime2](7) NULL,
+	[date_valeur] [datetime2](7) NULL,
+	[montant_ttc] [money] NULL,
+	[tva_deductible] [money] NULL,
+	[montant_ht] [money] NULL,
+	[versement_tva] [bit] NULL,
+	[id_sous_classification] [uniqueidentifier] NULL,
+	[details] [text] NULL,
+	[facture_verifie] [bit] NOT NULL,
+	[mois_valeur] [tinyint] NULL,
+	[transfert_compte] [money] NULL,
+	[date_ajout] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_Decaissment] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Encaissement]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Encaissement](
+	[id] [uniqueidentifier] NOT NULL,
+	[id_piece] [uniqueidentifier] NULL,
+	[id_societe] [uniqueidentifier] NULL,
+	[id_compte] [uniqueidentifier] NULL,
+	[total_ht] [money] NULL,
+	[total_tva] [money] NULL,
+	[total_ttc] [money] NULL,
+	[date_reglement] [datetime2](7) NULL,
+	[id_mode_paiement] [uniqueidentifier] NULL,
+	[mois_reglement] [tinyint] NULL,
+	[transfert_compte] [money] NULL,
+	[date_ajout] [datetime2](7) NULL,
+ CONSTRAINT [PK_Encaissement] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Mode_paiement]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Mode_paiement](
+	[id] [uniqueidentifier] NOT NULL,
+	[name] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_mode_paiement] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+ CONSTRAINT [AK_Name_Mode_paiement] UNIQUE NONCLUSTERED 
+(
+	[name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Piece]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Piece](
+	[id] [uniqueidentifier] NOT NULL,
+	[name] [varchar](50) NOT NULL,
+	[date] [datetime2](7) NULL,
+	[data] [varbinary](max) NULL,
+ CONSTRAINT [PK_Piece] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+ CONSTRAINT [AK_Name_Date_Piece] UNIQUE NONCLUSTERED 
+(
+	[name] ASC,
+	[date] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Societe]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Societe](
+	[id] [uniqueidentifier] NOT NULL,
+	[name] [varchar](10) NOT NULL,
+ CONSTRAINT [PK_Societe] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+ CONSTRAINT [AK_Name_Societe] UNIQUE NONCLUSTERED 
+(
+	[name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[sous_classification]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[sous_classification](
+	[id] [uniqueidentifier] NOT NULL,
+	[name] [varchar](100) NOT NULL,
+	[id_classification] [uniqueidentifier] NOT NULL,
+ CONSTRAINT [PK_sous_classification] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+ CONSTRAINT [AK_Name_id_Sous_classification] UNIQUE NONCLUSTERED 
+(
+	[name] ASC,
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[sysdiagrams]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[sysdiagrams](
+	[name] [sysname] NOT NULL,
+	[principal_id] [int] NOT NULL,
+	[diagram_id] [int] IDENTITY(1,1) NOT NULL,
+	[version] [int] NULL,
+	[definition] [varbinary](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[diagram_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+ CONSTRAINT [UK_principal_name] UNIQUE NONCLUSTERED 
+(
+	[principal_id] ASC,
+	[name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Banque] ADD  CONSTRAINT [DF_Banque_id]  DEFAULT (newid()) FOR [id]
+GO
+ALTER TABLE [dbo].[Budget] ADD  CONSTRAINT [DF_Objectifs_id]  DEFAULT (newid()) FOR [id]
+GO
+ALTER TABLE [dbo].[Classification] ADD  CONSTRAINT [DF_Classification_id]  DEFAULT (newid()) FOR [id]
+GO
+ALTER TABLE [dbo].[Compte] ADD  CONSTRAINT [DF_Compte_id]  DEFAULT (newid()) FOR [id]
+GO
+ALTER TABLE [dbo].[Decaissement] ADD  CONSTRAINT [DF_Decaissment_id]  DEFAULT (newid()) FOR [id]
+GO
+ALTER TABLE [dbo].[Decaissement] ADD  CONSTRAINT [DF_Decaissment_date_ajout]  DEFAULT (getdate()) FOR [date_ajout]
+GO
+ALTER TABLE [dbo].[Encaissement] ADD  CONSTRAINT [DF_Encaissement_id]  DEFAULT (newid()) FOR [id]
+GO
+ALTER TABLE [dbo].[Mode_paiement] ADD  CONSTRAINT [DF_Mode_paiement_id]  DEFAULT (newid()) FOR [id]
+GO
+ALTER TABLE [dbo].[Piece] ADD  CONSTRAINT [DF_Piece_id]  DEFAULT (newid()) FOR [id]
+GO
+ALTER TABLE [dbo].[Societe] ADD  CONSTRAINT [DF_Societe_id]  DEFAULT (newid()) FOR [id]
+GO
+ALTER TABLE [dbo].[sous_classification] ADD  CONSTRAINT [DF_sous_classification_id]  DEFAULT (newid()) FOR [id]
+GO
+ALTER TABLE [dbo].[Banque]  WITH CHECK ADD  CONSTRAINT [FK_Banque_Compte] FOREIGN KEY([default_account])
+REFERENCES [dbo].[Compte] ([id])
+GO
+ALTER TABLE [dbo].[Banque] CHECK CONSTRAINT [FK_Banque_Compte]
+GO
+ALTER TABLE [dbo].[Budget]  WITH CHECK ADD  CONSTRAINT [FK_Objectifs_sous_classification] FOREIGN KEY([id_sous_classification])
+REFERENCES [dbo].[sous_classification] ([id])
+GO
+ALTER TABLE [dbo].[Budget] CHECK CONSTRAINT [FK_Objectifs_sous_classification]
+GO
+ALTER TABLE [dbo].[Compte]  WITH CHECK ADD  CONSTRAINT [FK_Compte_Banque] FOREIGN KEY([id_banque])
+REFERENCES [dbo].[Banque] ([id])
+GO
+ALTER TABLE [dbo].[Compte] CHECK CONSTRAINT [FK_Compte_Banque]
+GO
+ALTER TABLE [dbo].[Decaissement]  WITH CHECK ADD  CONSTRAINT [FK_Decaissment_Compte] FOREIGN KEY([id_compte])
+REFERENCES [dbo].[Compte] ([id])
+GO
+ALTER TABLE [dbo].[Decaissement] CHECK CONSTRAINT [FK_Decaissment_Compte]
+GO
+ALTER TABLE [dbo].[Decaissement]  WITH CHECK ADD  CONSTRAINT [FK_Decaissment_Mode_paiement] FOREIGN KEY([id_mode_paiement])
+REFERENCES [dbo].[Mode_paiement] ([id])
+GO
+ALTER TABLE [dbo].[Decaissement] CHECK CONSTRAINT [FK_Decaissment_Mode_paiement]
+GO
+ALTER TABLE [dbo].[Decaissement]  WITH CHECK ADD  CONSTRAINT [FK_Decaissment_sous_classification] FOREIGN KEY([id_sous_classification])
+REFERENCES [dbo].[sous_classification] ([id])
+GO
+ALTER TABLE [dbo].[Decaissement] CHECK CONSTRAINT [FK_Decaissment_sous_classification]
+GO
+ALTER TABLE [dbo].[Encaissement]  WITH CHECK ADD  CONSTRAINT [FK_Encaissement_Compte] FOREIGN KEY([id_compte])
+REFERENCES [dbo].[Compte] ([id])
+GO
+ALTER TABLE [dbo].[Encaissement] CHECK CONSTRAINT [FK_Encaissement_Compte]
+GO
+ALTER TABLE [dbo].[Encaissement]  WITH CHECK ADD  CONSTRAINT [FK_Encaissement_Mode_paiement] FOREIGN KEY([id_mode_paiement])
+REFERENCES [dbo].[Mode_paiement] ([id])
+GO
+ALTER TABLE [dbo].[Encaissement] CHECK CONSTRAINT [FK_Encaissement_Mode_paiement]
+GO
+ALTER TABLE [dbo].[Encaissement]  WITH CHECK ADD  CONSTRAINT [FK_Encaissement_Piece] FOREIGN KEY([id_piece])
+REFERENCES [dbo].[Piece] ([id])
+GO
+ALTER TABLE [dbo].[Encaissement] CHECK CONSTRAINT [FK_Encaissement_Piece]
+GO
+ALTER TABLE [dbo].[Encaissement]  WITH CHECK ADD  CONSTRAINT [FK_Encaissement_Societe] FOREIGN KEY([id_societe])
+REFERENCES [dbo].[Societe] ([id])
+GO
+ALTER TABLE [dbo].[Encaissement] CHECK CONSTRAINT [FK_Encaissement_Societe]
+GO
+ALTER TABLE [dbo].[sous_classification]  WITH CHECK ADD  CONSTRAINT [FK_sous_classification_classification] FOREIGN KEY([id_classification])
+REFERENCES [dbo].[Classification] ([id])
+GO
+ALTER TABLE [dbo].[sous_classification] CHECK CONSTRAINT [FK_sous_classification_classification]
+GO
+/****** Object:  StoredProcedure [dbo].[DeleteBudget]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[DeleteBudget]
+@id uniqueidentifier
+as 
+begin 
+	declare @id_verified uniqueidentifier;
+	set @id_verified=(select id from Budget where id=@id)
+	if @id_verified is null
+		raiserror ('erreur : budget introuvable',16,1)
+	delete from Budget where id= @id_verified;
+	select 'OK' as result;
+end
+GO
+/****** Object:  StoredProcedure [dbo].[DeleteDecaissement]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[DeleteDecaissement]
+@id uniqueidentifier
+as
+begin try
+
+	if (select facture_verifie from decaissement where id=@id) = 0
+		begin 
+		delete from decaissement where id=@id;
+		select 'OK' as retour;
+		end
+	else
+		select 'Impossible de supprimer un decaissement validé ou inexistant' as retour;
+end try
+begin catch
+	select ERROR_MESSAGE() as retour;
+end catch
+GO
+/****** Object:  StoredProcedure [dbo].[DeleteEncaissement]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[DeleteEncaissement]
+@id uniqueidentifier
+as 
+begin try
+	delete from Encaissement where id = @id;
+	select 'OK' as retour;
+end try
+begin catch
+	select ERROR_MESSAGE() as retour;
+end catch
+GO
+/****** Object:  StoredProcedure [dbo].[EditBudget]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[EditBudget]
+@id uniqueidentifier,
+@id_sous_classification uniqueidentifier,
+@budget money,
+@mois_valeur tinyint,
+@annee varchar(4)
+as 
+begin 
+	declare @id_sous_classification_verifiee uniqueidentifier;
+	set @id_sous_classification_verifiee=(select id from sous_classification where id=@id_sous_classification)
+	if (@id_sous_classification_verifiee is null and @id_sous_classification is not null) 
+		raiserror ('erreur : sous classification introuvable',16,1);
+	update Budget set 
+	id_sous_classification=coalesce(@id_sous_classification,(select id_sous_classification from Budget where id =@id)),
+	objectif=coalesce(@budget,(select objectif from Budget where id =@id)),
+	periode=coalesce(
+					DATEFROMPARTS(@annee, @mois_valeur, '01'),
+					DATEFROMPARTS(YEAR((select periode from Budget where id = @id)), @mois_valeur, '01'),
+					DATEFROMPARTS(@annee, MONTH((select periode from Budget where id = @id)), '01'),
+					(select periode from Budget where id =@id))
+	WHERE id=@id;
+	select 'OK' as result;
+end
+
+GO
+/****** Object:  StoredProcedure [dbo].[EditDecaissement]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[EditDecaissement]
+@id uniqueidentifier,
+@operation varchar(50),
+@compte varchar(50),
+@banque varchar(50),
+@mode_paiement varchar(50),
+@date_compta varchar(10),
+@date_operation varchar(10),
+@date_valeur varchar(10),
+@montant_ttc money,
+@tva_deductible money,
+@montant_ht money,
+@versement_tva bit,
+@id_sous_classification uniqueidentifier,
+@details text,
+@facture_verifie bit,
+@mois_valeur tinyint,
+@transfert_compte money
+as
+BEGIN TRY
+	update Decaissement
+	set 
+	operation =coalesce(@operation,(select operation from decaissement where id=@id)),
+	id_compte =coalesce((select id from compte where numero like @compte),(select default_account from banque where name like @banque),(select id_compte from decaissement where id=@id)),
+	id_mode_paiement =coalesce((select id from mode_paiement where name like @mode_paiement),(select id_mode_paiement from decaissement where id=@id)),
+	date_compta =coalesce(convert(datetime,@date_compta,103),(select date_compta from decaissement where id=@id)),
+	date_operation =coalesce(convert(datetime,@date_operation,103),(select date_operation from decaissement where id=@id)),
+	date_valeur =coalesce(convert(datetime,@date_valeur,103),(select date_valeur from decaissement where id=@id)),
+	montant_ttc =coalesce(@montant_ttc,(select montant_ttc from decaissement where id=@id)),
+	tva_deductible =coalesce(@tva_deductible,(select tva_deductible from decaissement where id=@id)),
+	montant_ht =coalesce(@montant_ht,(select montant_ht from decaissement where id=@id)),
+	versement_tva =coalesce(@versement_tva,(select versement_tva from decaissement where id=@id)),
+	id_sous_classification =coalesce(@id_sous_classification,(select id_sous_classification from decaissement where id=@id)),
+	details =coalesce(@details,(select details from decaissement where id=@id)),
+	facture_verifie =coalesce(@facture_verifie,(select facture_verifie from decaissement where id=@id)),
+	mois_valeur =coalesce(@mois_valeur,(select mois_valeur from decaissement where id=@id)),
+	transfert_compte =coalesce(@transfert_compte,(select transfert_compte from decaissement where id=@id)),
+	date_ajout =getdate()
+	from Decaissement 
+	where id=@id;
+	select 'OK' as retour;
+END TRY
+BEGIN CATCH
+	SELECT ERROR_MESSAGE();
+END CATCH
+GO
+/****** Object:  StoredProcedure [dbo].[EditEncaissement]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[EditEncaissement]
+@id uniqueidentifier,
+@societe varchar(50),
+@compte varchar(50),
+@banque varchar(50),
+@total_ht money,
+@total_tva money,
+@total_ttc money,
+@date_reglement varchar(10),
+@mode_paiement varchar(50),
+@transfert_compte money
+as
+declare @id_compte uniqueidentifier;
+set @id_compte =  ( select (coalesce((select c.id from compte c join Banque b on c.id_banque=b.id where b.name like @banque and c.numero like @compte),
+												(select default_account from Banque where name like @banque))));
+update Encaissement
+set 
+id_societe =coalesce((select id from Societe where name like @societe),(select id_societe from encaissement where id=@id)),
+id_compte =coalesce(@id_compte,(select id from compte where  numero like @id_compte),(select id_compte from encaissement where id=@id)),
+id_mode_paiement =coalesce((select id from mode_paiement where name like @mode_paiement),(select id_mode_paiement from encaissement where id=@id)),
+total_ht =coalesce(@total_ht,(select total_ht from encaissement where id=@id)),
+total_tva =coalesce(@total_tva,(select total_tva from encaissement where id=@id)),
+total_ttc =coalesce(@total_ttc,(select @total_ttc from encaissement where id=@id)),
+date_reglement =coalesce(convert(datetime,@date_reglement,103),(select date_reglement from encaissement where id=@id)),
+mois_reglement =coalesce(month(convert(datetime,@date_reglement,103)),(select mois_reglement from encaissement where id=@id)),
+transfert_compte =coalesce(@transfert_compte,(select transfert_compte from encaissement where id=@id)),
+date_ajout =getdate()
+from encaissement 
+where id=@id;
+select 'OK' as retour;
+GO
+/****** Object:  StoredProcedure [dbo].[EditPiece]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[EditPiece]
+@id uniqueidentifier ,
+@data_piece varbinary(MAX),
+@name varchar(50)
+as 
+update Piece 
+set data=(coalesce(@data_piece,(select data from Piece where id = @id ))),
+name=coalesce(@name,(select name from Piece where id = @id))
+GO
+/****** Object:  StoredProcedure [dbo].[GetAccountType]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[GetAccountType] as 
+select 
+b.name as banque,
+c.numero as compte
+from Compte c 
+join banque b on b.id = c.id_banque
+order by b.name,c.numero
+GO
+/****** Object:  StoredProcedure [dbo].[GetAllAccountsPositionAtDate]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[GetAllAccountsPositionAtDate]
+
+@date  varchar(50)
+
+as
+
+select numero, coalesce(SUM(amount),0) as position from (
+select CONCAT(b.name,' - ',c.numero) as numero,(0-d.montant_ttc) as amount
+from Compte c
+join Banque b on b.id=c.id_banque
+left join Decaissement d on d.id_compte=c.id and d.date_valeur<=CONVERT(datetime,@date,103) and facture_verifie=1
+union all
+
+select CONCAT(b.name,' - ',c.numero) as numero,e.total_ttc as amount
+from Compte c
+join Banque b on b.id=c.id_banque
+left join Encaissement e on e.id_compte=c.id and e.date_reglement<=CONVERT(datetime,@date,103)) x
+group by numero
+GO
+/****** Object:  StoredProcedure [dbo].[GetAllEncaissement]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[GetAllEncaissement]
+as 
+select 
+e.id,
+s.name as societe,
+c.numero as compte,
+b.name as banque,
+total_ht,
+total_ttc,
+total_tva,
+date_reglement,
+m.name as mode_paiement,
+transfert_compte,
+date_ajout
+from Encaissement e
+join Compte c on c.id=e.id_compte
+join Banque b on b.id=c.id_banque 
+join Mode_paiement m on m.id=e.id_mode_paiement
+join Societe s on s.id=e.id_societe
+GO
+/****** Object:  StoredProcedure [dbo].[GetAllSociete]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetAllSociete]	
+as 
+select id,name from Societe
+GO
+/****** Object:  StoredProcedure [dbo].[GetBudget]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[GetBudget] 
+@classification varchar(50),
+@year varchar(4)
+as 
+select p.id as id_budget ,p.objectif as budget,month(p.periode) as mois_valeur,s.id as id_sous_classification,s.name as sous_classification
+from Budget p
+join sous_classification s on s.id=p.id_sous_classification
+join classification c on c.id=s.id_classification
+where c.name=@classification
+and YEAR(p.periode)=@year
+GO
+/****** Object:  StoredProcedure [dbo].[GetClassification]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[GetClassification]
+as 
+select 
+c.id as id_classification,
+c.name classification,
+s.id as id_sous_classification,
+s.name as sous_classification
+from classification c
+join sous_classification s on c.id= s.id_classification
+order by c.id desc
+GO
+/****** Object:  StoredProcedure [dbo].[GetDraftDecaissements]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[GetDraftDecaissements] as 
+select
+d.id,
+operation,
+banque.name as banque,
+compte.numero as compte,
+mode_paiement.name as mode_paiement,
+date_compta,
+date_operation,
+date_valeur,
+montant_ttc
+from Decaissement d 
+join compte on compte.id = d.id_compte 
+join banque on banque.id=compte.id_banque
+join Mode_paiement on Mode_paiement.id = coalesce(d.id_mode_paiement,(select id from mode_paiement  where name='AUCUN') )
+where facture_verifie=0
+order by d.date_ajout
+GO
+/****** Object:  StoredProcedure [dbo].[GetEncaissementInterval]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[GetEncaissementInterval]
+@debut_interval varchar(50),
+@fin_interval varchar(50)
+as 
+select * from Encaissement where date_ajout between CONVERT(datetime2(7),@debut_interval,103) and CONVERT(datetime2(7),@fin_interval,103)
+GO
+/****** Object:  StoredProcedure [dbo].[GetObjectifYear]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[GetObjectifYear]
+@annee varchar(4)
+as
+select c.name as classif, s.name as sous_classif,b.objectif,d.operation,d.montant_ttc
+from Classification c
+join sous_classification s on s.id_classification=c.id
+left merge join 
+	(select sum(objectif) as objectif,id_sous_classification from Budget where YEAR(Budget.periode)=@annee group by id_sous_classification) as b  
+	on b.id_sous_classification=s.id
+left merge join Decaissement d on d.id_sous_classification=s.id and facture_verifie=1 and YEAR(d.date_valeur)=@annee
+
+order by sous_classif desc
+GO
+/****** Object:  StoredProcedure [dbo].[GetPayementMethod]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[GetPayementMethod] as 
+select mp.name
+from Mode_paiement mp
+GO
+/****** Object:  StoredProcedure [dbo].[GetTotalAccountPositionAtDate]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create procedure [dbo].[GetTotalAccountPositionAtDate]
+@date varchar(10),
+@compte varchar(50)
+as
+
+declare @total_decaissement money;
+declare @total_encaissement money;
+
+set @total_decaissement=(
+select  SUM(d.montant_ttc)
+from Decaissement d 
+join Compte c on c.id=d.id_compte
+where d.date_valeur <=CONVERT(datetime, @date,103)
+and d.facture_verifie=1
+and c.numero=@compte);
+set @total_encaissement=(
+select  SUM(e.total_ttc)
+from Encaissement e
+join Compte c on c.id=e.id_compte
+where e.date_reglement <=CONVERT(datetime, @date,103)
+and c.numero=@compte);
+
+select @date as date, coalesce(@total_encaissement,0)-coalesce(@total_decaissement,0) as position ;
+GO
+/****** Object:  StoredProcedure [dbo].[GetTotalPositionAtDate]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE procedure [dbo].[GetTotalPositionAtDate]
+@date varchar(10)
+as
+
+declare @total_decaissement money;
+declare @total_encaissement money;
+
+set @total_decaissement=(
+select  SUM(d.montant_ttc)
+from Decaissement d 
+where d.date_valeur <=CONVERT(datetime, @date,103)
+and d.facture_verifie=1);
+set @total_encaissement=(
+select  SUM(e.total_ttc)
+from Encaissement e
+where e.date_reglement <=CONVERT(datetime, @date,103));
+
+select @date as date, coalesce(@total_encaissement,0)-coalesce(@total_decaissement,0) as position ;
+
+GO
+/****** Object:  StoredProcedure [dbo].[GetValidatedDecaissements]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[GetValidatedDecaissements] as 
+SELECT d.[id]
+      ,[operation]
+      ,c.numero as compte
+	  ,b.name as banque
+      ,m.name as mode_paiement
+      ,[date_compta]
+      ,[date_operation]
+      ,[date_valeur]
+      ,[montant_ttc]
+      ,[tva_deductible]
+      ,[montant_ht]
+      ,[versement_tva]
+      ,s.name as sous_classification
+      ,cl.name as classification
+	  ,[details]
+      ,[facture_verifie]
+      ,[mois_valeur]
+      ,[transfert_compte]
+      ,[date_ajout]
+  FROM [dbo].[Decaissement] d
+  join compte c on c.id =d.id_compte
+  join Mode_paiement m on m.id = coalesce(d.id_mode_paiement,(select id from mode_paiement  where name='AUCUN') ) 
+  join sous_classification s on s.id= coalesce(d.id_sous_classification,(select id from sous_classification  where name='AUCUNE') )
+  join Classification cl on cl.id=coalesce(s.id_classification,(select id from classification where name='AUCUNE') )
+  join Banque b on b.id=c.id_banque
+  where d.facture_verifie=1
+GO
+/****** Object:  StoredProcedure [dbo].[SaveBudget]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[SaveBudget]
+@mois_valeur varchar(2),
+@annee varchar(4),
+@id_sous_classification uniqueidentifier,
+@budget money
+as 
+begin try
+	declare @id_sous_calssification_verifiee uniqueidentifier;
+	set @id_sous_calssification_verifiee=(select id from sous_classification where id = @id_sous_classification);
+	if(@id_sous_calssification_verifiee is null)
+		raiserror ('erreur : sous classification introuvable',16,1);
+	insert into Budget(id_sous_classification,periode,objectif)
+	values(@id_sous_calssification_verifiee, DATEFROMPARTS(@annee, @mois_valeur, '01'),@budget);
+	select 'OK' as result;
+end try
+begin catch
+	select ERROR_MESSAGE();
+end catch
+GO
+/****** Object:  StoredProcedure [dbo].[saveDraftDecaissement]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[saveDraftDecaissement]
+@operation varchar(50) ,
+@compte  varchar(50),
+@banque  varchar(50),
+@mode_paiement  varchar(10),
+@date_compta  varchar(50),
+@date_operation  varchar(50),
+@date_valeur  varchar(50),
+@montant_ttc  money
+as 
+SET DATEFORMAT dmy;  
+
+declare @result varchar(50)=''
+if (trim(@compte) =  '' or @compte is null)
+
+	insert into Decaissement
+	(operation,
+	id_compte,
+	id_mode_paiement,
+	date_compta,
+	date_operation,
+	date_valeur,
+	montant_ttc,
+	facture_verifie)
+
+	values
+
+	(@operation,
+	(select default_account from Banque b  where b.name like @banque),
+	(select id from Mode_paiement m  where m.name like COALESCE (NULLIF(@mode_paiement, ''),'AUCUN')),
+		convert(datetime,@date_compta,103),
+		convert(datetime,@date_operation,103),
+		convert(datetime,@date_valeur,103),
+	@montant_ttc,
+	0);
+else
+	insert into Decaissement
+	(operation,
+	id_compte,
+	id_mode_paiement,
+	date_compta,
+	date_operation,
+	date_valeur,
+	montant_ttc,
+	facture_verifie)
+
+	values
+
+	(@operation,
+	(select id from Compte c  where c.numero like @compte),
+	(select id from Mode_paiement m  where m.name like COALESCE (NULLIF(@mode_paiement, ''),'AUCUN')),
+	@date_compta,
+	@date_operation,
+	@date_valeur,
+	@montant_ttc,
+	0);
+select top 1 id as retour from decaissement order by date_ajout desc;
+GO
+/****** Object:  StoredProcedure [dbo].[SaveEncaissement]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SaveEncaissement]
+@societe varchar(50),
+@compte varchar(50),
+@banque varchar(50),
+@total_ht money,
+@total_tva money,
+@total_ttc money,
+@date_reglement varchar(50),
+@mode_paiement varchar(50),
+@transfert_compte money
+as 
+begin try
+	declare @id_compte uniqueidentifier;
+	set @id_compte = ( select (coalesce((select c.id from compte c join Banque b on c.id_banque=b.id where b.name like @banque and c.numero like @compte),
+												 (select default_account from Banque where name like @banque))));
+	insert into Encaissement ( id_societe,id_compte,total_ht,total_tva,total_ttc,date_reglement,id_mode_paiement,mois_reglement,transfert_compte,date_ajout)
+	values(
+	(select id from Societe where name like @societe),
+	@id_compte,
+	@total_ht,
+	@total_tva,
+	@total_ttc,
+	CONVERT(datetime,@date_reglement,103),
+	(select id from mode_paiement where name like @mode_paiement),
+	(select month(CONVERT(datetime,@date_reglement,103))),
+	@transfert_compte,
+	getdate());
+	select top 1 id from Encaissement order by date_ajout desc;
+end try
+begin catch
+	begin
+		select concat(ERROR_MESSAGE(),@date_reglement);
+		throw;
+	end
+end catch
+GO
+/****** Object:  StoredProcedure [dbo].[ValidateDecaissement]    Script Date: 27/06/2019 10:35:59 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[ValidateDecaissement]
+@id_sous_classification varchar(50) ,
+@id_decaissement varchar(50),
+@mois_valeur tinyint,
+@tva_deductible money,
+@montant_ht money,
+@versement_tva bit
+as 
+begin try
+	begin
+		declare @id_sous_classification_verified uniqueidentifier;
+		set @id_sous_classification_verified= (select id from sous_classification where id = @id_sous_classification);
+		if(@id_sous_classification_verified is null ) 
+			begin 
+				raiserror ('erreur : sous classification introuvable',16,1);
+			end
+		declare @id_decaissement_verified uniqueidentifier;
+		set @id_decaissement_verified= (select id from Decaissement where id = @id_decaissement);
+		if(@id_decaissement_verified is null ) 
+			begin 
+				raiserror ('erreur : decaissement introuvable',16,1);
+			end
+		update Decaissement set id_sous_classification= CONVERT(uniqueidentifier,@id_sous_classification_verified),
+								facture_verifie=1,
+								mois_valeur=@mois_valeur,
+								tva_deductible=@tva_deductible,
+								montant_ht=@montant_ht,
+								versement_tva=@versement_tva
+							WHERE id = convert(uniqueidentifier,@id_decaissement_verified);
+		select 'OK' as result;
+	end
+end try
+begin catch
+	select ERROR_MESSAGE();
+end catch	
+GO
+EXEC sys.sp_addextendedproperty @name=N'microsoft_database_tools_support', @value=N'refactoring log' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'__RefactorLog'
+GO
+EXEC sys.sp_addextendedproperty @name=N'microsoft_database_tools_support', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'sysdiagrams'
+GO

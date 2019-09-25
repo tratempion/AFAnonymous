@@ -1,0 +1,18 @@
+{
+  "IsEncrypted": false,
+
+  "Values": {
+    "AZURE_FUNCTION_PROXY_DISABLE_LOCAL_CALL": "true",
+    "STATIC_FILES": "http://localhost:8080"
+  },
+  "Host": {
+    "LocalHttpPort": 7071,
+    "CORS": "*"
+  },
+  "ConnectionStrings": {
+    "Production": "Server=tcp:afupeo-sql.database.windows.net,1433;Initial Catalog=afupeo;Persist Security Info=False;User ID=afupeo_admin;Password=Expaceo+2019;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
+    "Test": "Server=tcp:afupeo.database.windows.net,1433;Initial Catalog=afupeoSQL-test;Persist Security Info=False;User ID=afupeo_admin;Password=Expaceo+2019;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+
+  }
+
+}

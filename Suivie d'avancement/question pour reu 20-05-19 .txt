@@ -1,0 +1,3 @@
+les encaissement doivent avoir un mode de paiement? (absent dans l'excel)
+supprimer un encaissement supprime la piece?
+par default, cbn de ligne afficher sur les recherche et les saisies?

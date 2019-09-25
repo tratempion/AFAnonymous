@@ -1,0 +1,70 @@
+{
+
+  "$schema": "http://json.schemastore.org/proxies",
+
+  "proxies": {
+
+    "SPA": {
+
+      "matchCondition": {
+
+        "route": "/spa/{*urlspa}"
+
+      },
+
+      "backendUri": "%STATIC_FILES%/{urlspa}"
+
+    },
+    "SPA_ROOT": {
+      "matchCondition": {
+        "route": "/"
+      },
+      "responseOverrides": {
+        "response.statusCode": "301",
+        "response.headers.Location": "/spa/index.html"
+      }
+    },
+    "SPA_TEST": {
+
+      "matchCondition": {
+
+        "route": "/test/spa/{*urlspa}"
+
+      },
+
+      "backendUri": "https://comptestockageprojannuel.blob.core.windows.net/test/{urlspa}"
+
+    },
+    "SPA_TEST_ROOT": {
+      "matchCondition": {
+        "route": "/test"
+      },
+      "responseOverrides": {
+        "response.statusCode": "301",
+        "response.headers.Location": "/test/spa/index.html"
+      }
+    },
+    "SPA_DEBUG": {
+
+      "matchCondition": {
+
+        "route": "/debug/spa/{*urlspa}"
+
+      },
+
+      "backendUri": "http://localhost:8080/{urlspa}"
+
+    },
+    "SPA_DEBUG_ROOT": {
+      "matchCondition": {
+        "route": "/debug"
+      },
+      "responseOverrides": {
+        "response.statusCode": "301",
+        "response.headers.Location": "/debug/spa/index.html"
+      }
+    }
+
+  }
+
+}

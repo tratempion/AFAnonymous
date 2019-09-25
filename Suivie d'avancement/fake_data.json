@@ -1,0 +1,18 @@
+{
+    "Operation": "Opération banque test",
+    "compte": "BNP",
+    "mode_paiement": "CB AT",
+    "date_compta": "2018-09-02T00:00:00",
+    "date_operation": "2018-09-02T00:00:00",
+    "date_valeur": "2018-09-02T00:00:00",
+    "montant_ttc": 4500000.0000,
+    "tva_deductible": 900000.0000,
+    "montant_ht": 3600000.0000,
+    "versement_tva": false,
+    "sous_classification": "Téléphonie & internet",
+    "classification": "STRUCTURE",
+    "details": "",
+    "facture_verifie": true,
+    "mois_valeur": 9,
+    "transfert_compte": 0.0000
+  }

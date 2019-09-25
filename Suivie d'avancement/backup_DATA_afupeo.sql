@@ -1,0 +1,126 @@
+
+delete from Decaissement;
+delete from sous_classification;
+delete from Classification;
+delete from Compte;
+delete from Banque;
+delete from Mode_paiement;
+delete from Societe;
+insert into classification (name) values('ACTIONS_RH');
+insert into classification (name) values('ADMINISTRATIF');
+insert into classification (name) values('CHARGES_SALARIES');
+insert into classification (name) values('DETACHEMENT');
+insert into classification (name) values('DIVERS');
+insert into classification (name) values('EQUIPEMENTS_FOURNITURES_REPARATION');
+insert into classification (name) values('FINANCIER');
+insert into classification (name) values('FRAIS');
+insert into classification (name) values('JURIDIQUE');
+insert into classification (name) values('PRESTATAIRES');
+insert into classification (name) values('RELATION_CLIENT_RECRUTEMENT');
+insert into classification (name) values('SALAIRES');
+insert into classification (name) values('STRUCTURE');
+insert into classification (name) values('TECHNIQUE');
+insert into Classification (name) values('AUCUNE');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'ACTIONS_RH'), 'Anniversaire EXPACEO');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'ACTIONS_RH'), 'Autre');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'ACTIONS_RH'), 'Certifications');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'ACTIONS_RH'), 'Crèche');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'ACTIONS_RH'), 'Formations');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'ACTIONS_RH'), 'JEDI');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'ACTIONS_RH'), 'Naissance / mariage');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'ACTIONS_RH'), 'Petits dejeuners arrivées');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'ACTIONS_RH'), 'Séminaire');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'ACTIONS_RH'), 'Soirées / Evènements');
+
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'ADMINISTRATIF'), 'Courrier');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'ADMINISTRATIF'), 'Logiciels');
+
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'CHARGES_SALARIES'), 'Assurance responsabilité civile pro');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'CHARGES_SALARIES'), 'Médecine du travail');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'CHARGES_SALARIES'), 'Mutuelle');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'CHARGES_SALARIES'), 'Titres restaurants');
+
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'DETACHEMENT'), 'Autres frais');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'DETACHEMENT'), 'Coworking');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'DETACHEMENT'), 'Transports (avion, train…)');
+
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'DIVERS'), 'Divers');
+
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'EQUIPEMENTS_FOURNITURES_REPARATION'), 'Assurances véhicules');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'EQUIPEMENTS_FOURNITURES_REPARATION'), 'Entretien et réparation (cloisons, cablage…) - possible investissement');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'EQUIPEMENTS_FOURNITURES_REPARATION'), 'Fournitures');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'EQUIPEMENTS_FOURNITURES_REPARATION'), 'Mobilier');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'EQUIPEMENTS_FOURNITURES_REPARATION'), 'Voitures de société');
+
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'FINANCIER'), 'Assemblées Générales');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'FINANCIER'), 'Banque');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'FINANCIER'), 'Commissaire aux comptes');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'FINANCIER'), 'Comptable');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'FINANCIER'), 'Contributions');
+
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'FRAIS'), 'Essence');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'FRAIS'), 'Hôtels');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'FRAIS'), 'Parking');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'FRAIS'), 'Péage');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'FRAIS'), 'Restaurants');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'FRAIS'), 'Transports (avion, train…)');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'FRAIS'), 'Voiture de fonction');
+
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'JURIDIQUE'), 'Assurances homme clé, mandataires sociaux');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'JURIDIQUE'), 'Avocat affaire');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'JURIDIQUE'), 'Avocat social');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'JURIDIQUE'), 'Procès/tribunal');
+
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'PRESTATAIRES'), 'Sous-traitance');
+
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'RELATION_CLIENT_RECRUTEMENT'), 'Cadeaux clients');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'RELATION_CLIENT_RECRUTEMENT'), 'Communications');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'RELATION_CLIENT_RECRUTEMENT'), 'Evènements promotionnels');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'RELATION_CLIENT_RECRUTEMENT'), 'Matinales - ExpaceoLabs');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'RELATION_CLIENT_RECRUTEMENT'), 'Salons');
+
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'SALAIRES'), 'Charges');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'SALAIRES'), 'Salaires');
+
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'STRUCTURE'), 'Assurances Locaux');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'STRUCTURE'), 'Charges locatives');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'STRUCTURE'), 'Electricité');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'STRUCTURE'), 'Loyer');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'STRUCTURE'), 'Ménage');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'STRUCTURE'), 'Sécurité');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'STRUCTURE'), 'Téléphonie & internet');
+
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'TECHNIQUE'), 'Autres matériels');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'TECHNIQUE'), 'Licences MSDN');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'TECHNIQUE'), 'Licences SILO');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'TECHNIQUE'), 'Office 365');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'TECHNIQUE'), 'Ordinateurs amortissables 3/5 ans');
+insert into sous_classification ( id_classification,name) values ((select id from classification where name like 'TECHNIQUE'), 'Ordinateurs crédit-bail');
+
+insert into sous_classification ( id_classification,name) values ((select id from Classification where name like 'AUCUNE'),'AUCUNE')
+
+insert into Banque( name) values ('BNP');
+insert into Banque( name) values ('BPOP');
+insert into Banque( name) values ('HSBC');
+
+insert into Compte( id_banque, numero) values ((select id from Banque where name like 'BNP'), 'compte 1 BNP');
+insert into Compte( id_banque, numero) values ((select id from Banque where name like 'BNP'), 'compte 2 BNP');
+insert into Compte( id_banque, numero) values ((select id from Banque where name like 'BPOP'), 'compte 1 BPOP');
+insert into Compte( id_banque, numero) values ((select id from Banque where name like 'HSBC'), 'compte 1 HSBC');
+insert into Compte( id_banque, numero) values ((select id from Banque where name like 'HSBC'), 'compte 2 HSBC');
+insert into Compte( id_banque, numero) values ((select id from Banque where name like 'HSBC'), 'compte 3 HSBC');
+
+update Banque set default_account = (select id from Compte where numero like 'compte 1 BNP') where id=(select id from Banque where name like 'BNP') 
+update Banque set default_account = (select id from Compte where numero like 'compte 1 BPOP') where id=(select id from Banque where name like 'BPOP') 
+update Banque set default_account = (select id from Compte where numero like 'compte 1 HSBC') where id=(select id from Banque where name like 'HSBC') 
+
+insert into Mode_paiement( name) values ('CHQ');
+insert into Mode_paiement( name) values ('VIR');
+insert into Mode_paiement( name) values ('BOR');
+insert into Mode_paiement( name) values ('CB AT');
+insert into Mode_paiement( name) values ('CB JDN');
+insert into Mode_paiement( name) values ('AUCUN');
+
+insert into Societe(name) values('BIS');
+insert into Societe(name) values('DUO');
+insert into Societe(name) values('TERSIO');

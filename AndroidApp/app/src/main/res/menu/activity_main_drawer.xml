@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="@string/nav_header_search">
+        <menu android:checkableBehavior="single">
+            <group android:id="@+id/searchGroup" android:checkableBehavior="single">
+
+            <item
+                android:id="@+id/nav_search_income"
+                android:icon="@drawable/ic_menu_search"
+                android:title="@string/nav_search_income" />
+            <item
+                android:id="@+id/nav_search_outcome"
+                android:icon="@drawable/ic_menu_search"
+                android:title="@string/nav_search_outcome" />
+            </group>
+        </menu>
+    </item>
+
+    <!--item android:title="@string/nav_header_search">
+        <menu android:checkableBehavior="single">
+            <group android:id="@+id/inputGroup" android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_input_income"
+                    android:icon="@drawable/ic_menu_input"
+                    android:title="@string/nav_input_income" />
+
+                <item
+                    android:id="@+id/nav_input_outcome"
+                    android:icon="@drawable/ic_menu_input"
+                    android:title="@string/nav_input_outcome" />
+            </group>
+        </menu>
+    </item-->
+
+    <item android:title="@string/nav_header_other">
+        <menu android:checkableBehavior="single">
+            <group android:id="@+id/otherGroup" android:checkableBehavior="single">
+                <!--item
+                    android:id="@+id/nav_budget"
+                    android:icon="@drawable/ic_menu_budget"
+                    android:title="@string/nav_budget" />
+                <item
+                    android:id="@+id/nav_rapprochement"
+                    android:icon="@drawable/ic_menu_rapprochement"
+                    android:title="@string/nav_rapprochement" /-->
+                <item
+                    android:id="@+id/nav_reporting"
+                    android:icon="@drawable/ic_menu_reporting"
+                    android:title="@string/nav_reporting" />
+            </group>
+        </menu>
+    </item>
+
+</menu>

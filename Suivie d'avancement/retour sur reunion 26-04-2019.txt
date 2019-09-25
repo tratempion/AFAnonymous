@@ -1,0 +1,29 @@
+retour sur reunion 26-04-2019
+
+mettre une recherche dans le tableau dernier decaissement - écran refondu-
+par default trier dernier decaissement par date comptable - TODO -
+virer le bouton ajouter un nouveau decaissement, rajouter une ligne dès qu'un champs de la dernière ligne soit saisie (non null) - DONE -
+virer l'ecran de saisie de nouvelle ligne et faire un data grid qui permet de faire des copier coller - éran refondu -
+BUG date operation ne s'affiche pas - DONE -
+BUG les date s'affiche en datetime et pas en date -TODO -
+BUG mettre en forme le montant en culture du compte banquaire - TODO -
+un compte bancaire doit avoir une curency -TODO -
+ergonomie : moins de clic de souris - écran refondu -
+mettre le bouton de sauvegarde en ba à droite - DONE -
+une fois qu'une ligne est raproché, elle ne peut plus etre édité dans la saisie - DONE -
+
+dans la recherche mettre en place une ligne de total en fonction des filtre - TODO -
+dans la recherche mettre en place une ligne de total sur l'année - TODO -
+dans la recherche mettre en place des filtres - DONE -
+
+dans saisie rajouter budget - TODO -
+
+dans reporting rajouter des sous menu : 
+	encaissement
+	decaissement
+	position
+
+
+TODO gestion des baque/comptes - DONE -
+	 refonte de la saisie + ajout du budget - half DONE -
+	 création de la maquette reporting - TODO -
