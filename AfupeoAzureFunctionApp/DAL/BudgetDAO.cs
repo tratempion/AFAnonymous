@@ -274,10 +274,10 @@ namespace DAL
                     html += @"<tr class='green classif'>";
 
                 }
-                html += "<td>" + classif.Key + "</td>";
-                html += "<td>" + totalObjectifClassif + " €</td>";
-                html += "<td>" + totalDecaissementClassif + " €</td>";
-                html += "<td>" + (totalObjectifClassif - totalDecaissementClassif).ToString() + " €</td>";
+                html += "<td style=\"font-size: 11pt\">" + classif.Key + "</td>";
+                html += "<td style=\"font-size: 11pt\">" + totalObjectifClassif.ToString("C0").Replace(" €","&nbsp€") + " </td>";
+                html += "<td style=\"font-size: 11pt\">" + totalDecaissementClassif.ToString("C0").Replace(" €", "&nbsp€") + "</td>";
+                html += "<td style=\"font-size: 11pt\">" + (totalObjectifClassif - totalDecaissementClassif).ToString("C0").Replace(" €", "&nbsp€") + "</td>";
                 html += "</tr>";
 
 
@@ -299,9 +299,9 @@ namespace DAL
 
                     }
                     html += "<td>&nbsp;&nbsp;&nbsp;&nbsp;" + sousClassif.Key + "</td>";
-                    html += "<td>" + totalObjectifClassif + "</td>";
-                    html += "<td>" + totalDecaissementClassif + "</td>";
-                    html += "<td>" + (totalObjectifClassif - totalDecaissementClassif) + "</td>";
+                    html += "<td>" + totalObjectifClassif.ToString("C0").Replace(" €", "&nbsp€") + "</td>";
+                    html += "<td>" + totalDecaissementClassif.ToString("C0").Replace(" €", "&nbsp€") + "</td>";
+                    html += "<td>" + (totalObjectifClassif - totalDecaissementClassif).ToString("C0").Replace(" €", "&nbsp€") + "</td>";
                     html += "</tr>";
 
                 }
@@ -325,13 +325,13 @@ namespace DAL
 
                                 <tr>
 
-                                    <td> " + totalObjectif + @" </td>
+                                    <td> " + totalObjectif.ToString("C0").Replace(" €", "&nbsp€") + @" </td>
 
 
-                                    <td> " + totalDecaissement + @" </td>
+                                    <td> " + totalDecaissement.ToString("C0").Replace(" €", "&nbsp€") + @" </td>
 
 
-                                    <td> " + (totalObjectif - totalDecaissement) + @" </td>
+                                    <td> " + (totalObjectif - totalDecaissement).ToString("C0").Replace(" €", "&nbsp€") + @" </td>
 
 
                                 </tr>
@@ -357,7 +357,7 @@ namespace DAL
             <style>
             .classif{
                 font-weight:bold;
-                font-size: 15pt;
+                font-size: 12pt;
             }
             .red{
                 color: red;
