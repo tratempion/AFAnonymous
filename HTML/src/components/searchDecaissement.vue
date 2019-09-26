@@ -210,7 +210,7 @@
 
             </v-data-table>
 
-            <v-data-table :headers="headers" :items="rows" :search="search" :pagination.sync="pagination" :hide-headers="isMobile" :class="{mobile: isMobile}" v-else>
+            <v-data-table :headers="headers" :items="rows" :search="search" :pagination.sync="paginationMobile" :hide-headers="isMobile" :class="{mobile: isMobile}" v-else>
         
               <template slot="items" slot-scope="props">
         
@@ -233,8 +233,7 @@
 
                       <li class="flex-item" data-label="Versement TVA" v-if="props.item.versement_tva"><v-icon color="success">done</v-icon></li>
                       <li class="flex-item" data-label="Versement TVA" v-else><v-icon color="red">clear</v-icon></li>
-
-                      <li class="flex-item" data-label="Versement TVA">{{ props.item.versement_tva }}</li>
+                      
                       <li class="flex-item" data-label="Classification">{{ props.item.classification }}</li>
                       <li class="flex-item" data-label="Sous Classification">{{ props.item.sous_classification }}</li>
                       <li class="flex-item" data-label="Details">{{ props.item.details }}</li>
@@ -291,7 +290,15 @@ export default {
       pagination: {
 
         sortBy: "date_ajout",
+        descending: true,
         rowsPerPage: -1
+      },
+
+      paginationMobile: {
+
+        sortBy: "date_ajout",
+        descending: true,
+        rowsPerPage: 5
       },
 
       selected: [],      
@@ -396,49 +403,61 @@ export default {
 
     formatNumber(number){
 
-      if(null!=number && undefined!=number && ""!=number){
+            if(null!=number && undefined!=number && ""!=number){
 
-        number += "";
+                number += "";
 
-        var splited = number.split(".");
+                var splited = number.split(".");
 
-        var number = splited[0];
+                var number = splited[0];
 
-        var decimal = splited[1];
+                var decimal = splited[1];
 
-        var formatedNumber = "";
+                var formatedNumber = "";
 
-        var p = 1;
+                var p = 1;
 
-        for(var i=number.length-1; i >= 0; i--){
+                for(var i=number.length-1; i >= 0; i--){
 
-          formatedNumber += number.charAt(i);
+                    formatedNumber += number.charAt(i);
 
-          if(p==3 && i>0){
+                    if(p==3 && i>0){
 
-            formatedNumber += ".";
+                        formatedNumber += ",";
 
-            p=0;
-          }
+                        p=0;
+                    }
 
-          p++;
-        }
+                    p++;
+                }
 
-        formatedNumber = formatedNumber.split("").reverse().join("");
+                formatedNumber = formatedNumber.split("").reverse().join("");
 
-        if(null!=decimal && undefined!=decimal && decimal.length!=0){
-          
-          if(decimal.length>2){
+                if(null!=decimal && undefined!=decimal && decimal.length!=0){
+                
+                    if(decimal.length>2){
 
-            decimal = decimal.substring(0, 2);
-          }
+                        decimal = decimal.substring(0, 2);
+                    }
+                    else if(decimal.length==1){
 
-          formatedNumber += "," + decimal;
-        }
-      }
+                        decimal += "0";
+                    }
 
-      return formatedNumber;
-    },
+                    formatedNumber += "." + decimal;
+                }
+                else{
+
+                    formatedNumber += ".00";
+                }
+            }
+            else {
+
+                formatedNumber = "0.00";
+            }
+
+            return formatedNumber;
+        },
 
     toggleAll() {
 

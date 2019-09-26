@@ -9,6 +9,7 @@ import budget from '../components/budget.vue'
 import rapprochement from '../components/rapprochement.vue'
 import reportingExecution from '../components/reportingExecution.vue'
 import reportingPosition from '../components/reportingPosition.vue'
+import admin from '../components/admin.vue'
 
 export default new Router({
   routes: [
@@ -66,6 +67,11 @@ export default new Router({
       path: '/reportingPosition',
       name: 'reportingPosition',
       component: reportingPosition
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: admin
     }
   ]
 })

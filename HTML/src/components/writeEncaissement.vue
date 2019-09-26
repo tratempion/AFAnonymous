@@ -43,17 +43,7 @@
               </v-btn>
             </v-toolbar>
 
-            <v-snackbar
-              v-model="snackbar"
-              :color="snackbarColor"
-              :bottom="snackbarY==='bottom'"
-              :left="snackbarX==='left'"
-              :multi-line="snackbarMode==='multi-line'"
-              :right="snackbarX==='right'"
-              :timeout="3700"
-              :top="snackbarY==='top'"
-              :vertical="snackbarMode==='vertical'"
-            >
+            <v-snackbar v-model="snackbar" :color="snackbarColor" :bottom="snackbarY==='bottom'" :left="snackbarX==='left'" :multi-line="snackbarMode==='multi-line'" :right="snackbarX==='right'" :timeout="3700" :top="snackbarY==='top'" :vertical="snackbarMode==='vertical'">
               {{ snackbarText }}
               <v-btn dark flat @click="snackbar=false">Fermer</v-btn>
             </v-snackbar>
@@ -69,125 +59,48 @@
                       <v-card-text>
                         <v-container grid-list-md>
                           <v-flex>
-                            <v-autocomplete
-                              v-model="editedItem.societe"
-                              :items="allSociety"
-                              label="Société"
-                              :rules="societyRules"
-                              required
-                            ></v-autocomplete>
+                            <v-autocomplete v-model="editedItem.societe" :items="allSociety" label="Société" :rules="societyRules" required></v-autocomplete>
                           </v-flex>
                           <v-flex>
-                            <v-autocomplete
-                              v-model="editedItem.banque"
-                              :items="allBank"
-                              v-on:change="onChangeBank"
-                              label="Banque"
-                              :rules="bankRules"
-                              required
-                            ></v-autocomplete>
+                            <v-autocomplete v-model="editedItem.banque" :items="allBank" v-on:change="onChangeBank" label="Banque" :rules="bankRules" required></v-autocomplete>
                           </v-flex>
                           <v-flex>
-                            <v-autocomplete
-                              v-model="editedItem.compte"
-                              :items="allBankAccount"
-                              label="Compte"
-                              :rules="accountRules"
-                              required
-                            ></v-autocomplete>
+                            <v-autocomplete v-model="editedItem.compte" :items="allBankAccount" label="Compte" :rules="accountRules" required></v-autocomplete>
                           </v-flex>
                           <v-flex>
-                            <v-text-field
-                              v-on:change="setTotalTva"
-                              v-model="editedItem.total_ttc"
-                              label="Total TTC (€)"
-                              :rules="totalTTCRules"
-                              required
-                            ></v-text-field>
+                            <v-text-field v-on:change="setTotalTva" v-model="editedItem.total_ttc" label="Total TTC (€)" :rules="totalTTCRules" required></v-text-field>
                           </v-flex>
                           <v-flex>
-                            <v-text-field
-                              v-on:change="setTotalTva"
-                              v-model="editedItem.total_ht"
-                              label="Total HT (€)"
-                              :rules="totalHTRules"
-                              required
-                            ></v-text-field>
+                            <v-text-field v-on:change="setTotalTva" v-model="editedItem.total_ht" label="Total HT (€)" :rules="totalHTRules" required></v-text-field>
                           </v-flex>
                           <v-flex>
-                            <v-text-field
-                              v-on:change="setTotalHt"
-                              v-model="editedItem.total_tva"
-                              label="Total TVA (€)"
-                              :rules="totalTVARules"
-                              required
-                            ></v-text-field>
+                            <v-text-field v-on:change="setTotalHt" v-model="editedItem.total_tva" label="Total TVA (€)" :rules="totalTVARules" required></v-text-field>
                           </v-flex>
                           <v-flex>
-                            <v-menu
-                              v-model="menuDateReglement"
-                              :close-on-content-click="false"
-                              :nudge-right="40"
-                              lazy
-                              transition="scale-transition"
-                              offset-y
-                              full-width
-                              min-width="290px"
-                            >
+                            <v-menu v-model="menuDateReglement" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width min-width="290px">
                               <template v-slot:activator="{ on }">
-                                <v-text-field
-                                  v-model="editedItem.date_reglement"
-                                  label="Date Règlement"
-                                  prepend-icon="event"
-                                  v-on="on"
-                                  :rules="reglementDateRules"
-                                  required
-                                ></v-text-field>
+                                <v-text-field v-model="editedItem.date_reglement" label="Date Règlement" prepend-icon="event" v-on="on" :rules="reglementDateRules" required></v-text-field>
                               </template>
-                              <v-date-picker
-                                v-model="editedItem.date_reglement"
-                                @input="menuDateReglement = false"
-                              ></v-date-picker>
+                              <v-date-picker v-model="editedItem.date_reglement" @input="menuDateReglement = false"></v-date-picker>
                             </v-menu>
                           </v-flex>
                           <v-flex>
-                            <v-autocomplete
-                              v-model="editedItem.mode_paiement"
-                              :items="allPaymentMode"
-                              label="Mode de Paiement"
-                              :rules="paymentMethodRules"
-                              required
-                            ></v-autocomplete>
+                            <v-autocomplete v-model="editedItem.mode_paiement" :items="allPaymentMode" label="Mode de Paiement" :rules="paymentMethodRules" required></v-autocomplete>
                           </v-flex>
                           <v-flex>
-                            <v-checkbox
-                              v-model="editedItem.transfert_compte"
-                              label="Transfert Compte"
-                            ></v-checkbox>
+                            <v-checkbox v-model="editedItem.transfert_compte" label="Transfert Compte"></v-checkbox>
                           </v-flex>
                         </v-container>
                       </v-card-text>
                       <v-card-actions v-if="!isMobile">
                         <v-btn color="warning" block @click.native="close" large>Annuler</v-btn>
-                        <v-btn
-                          color="success"
-                          block
-                          @click.native="save"
-                          :disabled="!valid"
-                          large
-                        >Sauvegarder</v-btn>
+                        <v-btn color="success" block @click.native="save" :disabled="!valid" large>Sauvegarder</v-btn>
                       </v-card-actions>
                       <v-card-text v-else>
                         <v-container grid-list-md>
                           <v-layout wrap>
                             <v-flex>
-                              <v-btn
-                                color="success"
-                                block
-                                @click.native="save"
-                                :disabled="!valid"
-                                large
-                              >Sauvegarder</v-btn>
+                              <v-btn color="success" block @click.native="save" :disabled="!valid" large>Sauvegarder</v-btn>
                             </v-flex>
                             <v-flex>
                               <v-btn color="warning" block @click.native="close" large>Annuler</v-btn>
@@ -210,20 +123,8 @@
                     </v-card-title>
                     <v-card-text>
                       <v-container>
-                        <v-textarea
-                          v-model="excelData"
-                          box
-                          auto-grow
-                          background-color="light-blue lighten-5"
-                          label="Coller vos lignes Excel ici"
-                          :rules="excelDataRules"
-                          required
-                        ></v-textarea>
-                        <v-alert
-                          :value="alertExcelData"
-                          type="error"
-                          transition="scale-transition"
-                        >Vous devez rentrer au moins une ligne</v-alert>
+                        <v-textarea v-model="excelData" box auto-grow background-color="light-blue lighten-5" label="Coller vos lignes Excel ici" :rules="excelDataRules" required></v-textarea>
+                        <v-alert :value="alertExcelData" type="error" transition="scale-transition">Vous devez rentrer au moins une ligne</v-alert>
                       </v-container>
                     </v-card-text>
                     <v-card-actions v-if="!isMobile">
@@ -234,20 +135,10 @@
                       <v-container grid-list-md>
                         <v-layout wrap>
                           <v-flex>
-                            <v-btn
-                              color="success"
-                              block
-                              @click.native="validateExcel"
-                              large
-                            >Sauvegarder</v-btn>
+                            <v-btn color="success" block @click.native="validateExcel" large>Sauvegarder</v-btn>
                           </v-flex>
                           <v-flex>
-                            <v-btn
-                              color="warning"
-                              block
-                              @click.native="closeImportExcel"
-                              large
-                            >Annuler</v-btn>
+                            <v-btn color="warning" block @click.native="closeImportExcel" large>Annuler</v-btn>
                           </v-flex>
                         </v-layout>
                       </v-container>
@@ -258,110 +149,103 @@
             </v-card>
 
             <v-card>
-              <v-text-field
-                v-model="search"
-                prepend-icon="search"
-                label="Rechercher un mot clé dans tous le tableau"
-                single-line
-                hide-details
-              ></v-text-field>
+              
+              <v-layout v-resize="onResize" column>
 
-              <v-data-table
-                :headers="headers"
-                :items="items"
-                :search="search"
-                :hide-headers="isMobile"
-                :pagination.sync="pagination"
-                :class="{mobile: isMobile}"
-              >
-                <template slot="items" slot-scope="props">
-                  <tr v-if="!isMobile">
-                    <td class="justify-center layout px-0">
-                      <v-btn icon small @click="editItem(props.item)" color="amber">
-                        <v-icon color="white">edit</v-icon>
-                      </v-btn>
-                      <v-btn icon small @click="openDeleteDialog(props.item)" color="red">
-                        <v-icon color="white">delete</v-icon>
-                      </v-btn>
-                    </td>
-                    <td>{{ props.item.societe }}</td>
-                    <td>{{ props.item.banque }}</td>
-                    <td>{{ props.item.compte }}</td>
-                    <td>{{ formatNumber(props.item.total_ht) }}</td>
-                    <td>{{ formatNumber(props.item.total_tva) }}</td>
-                    <td>{{ formatNumber(props.item.total_ttc) }}</td>
-                    <td>{{ props.item.date_reglement }}</td>
-                    <td>{{ props.item.mode_paiement }}</td>
+                <v-menu v-if="isMobile" block offset-y :nudge-left="170" :close-on-content-click="false">
+      
+                  <v-btn block slot="activator" color="amber" dark>
+                    Trier <v-icon>swap_vert</v-icon>
+                  </v-btn>
+        
+                  <v-list>
+                    <v-list-tile v-for="item in headers" :key="item.value" @click="changeSort(item.value)">
+                      <v-list-tile-title>
+                        {{ item.text }}
+                      <v-icon v-if="paginationMobile.sortBy === item.value">{{paginationMobile.descending ? 'arrow_downward':'arrow_upward'}}</v-icon>
+                      </v-list-tile-title>
+                    </v-list-tile>
+                  </v-list>
+            
+                </v-menu>
 
-                    <td v-if="props.item.transfert_compte">
-                      <v-icon color="success">done</v-icon>
-                    </td>
-                    <td v-else>
-                      <v-icon color="red">clear</v-icon>
-                    </td>
-                  </tr>
-                  <tr v-else>
-                    <td>
-                      <ul class="flex-content">
-                        <li class="flex-item" data-label="Modifier">
-                          <v-btn block @click="editItem(props.item)" color="amber">
-                            <v-icon color="white">edit</v-icon>
-                          </v-btn>
-                        </li>
-                        <li class="flex-item" data-label="Supprimer">
-                          <v-btn block @click="openDeleteDialog(props.item)" color="red">
-                            <v-icon color="white">delete</v-icon>
-                          </v-btn>
-                        </li>
+              </v-layout>
 
-                        <li
-                          class="flex-item"
-                          data-label="Société"
-                          style="margin-top:25px"
-                        >{{ props.item.societe }}</li>
-                        <li
-                          class="flex-item"
-                          data-label="Banque"
-                          style="margin-top:25px"
-                        >{{ props.item.banque }}</li>
+                <v-text-field v-model="search" prepend-icon="search" label="Rechercher un mot clé dans tous le tableau" single-line hide-details></v-text-field>
 
-                        <li class="flex-item" data-label="Compte">{{ props.item.compte }}</li>
-                        <li
-                          class="flex-item"
-                          data-label="Total HT (€)"
-                        >{{ formatNumber(props.item.total_ht) }}</li>
-                        <li
-                          class="flex-item"
-                          data-label="Total TVA (€)"
-                        >{{ formatNumber(props.item.total_tva) }}</li>
-                        <li
-                          class="flex-item"
-                          data-label="Total TTC (€)"
-                        >{{ formatNumber(props.item.total_ttc) }}</li>
-                        <li
-                          class="flex-item"
-                          data-label="Date Règlement"
-                        >{{ props.item.date_reglement }}</li>
-                        <li
-                          class="flex-item"
-                          data-label="Mode de Paiement"
-                        >{{ props.item.mode_paiement }}</li>
+                <v-data-table :headers="headers" :items="items" :search="search" :hide-headers="isMobile" :pagination.sync="pagination" :class="{mobile: isMobile}" v-if="!isMobile">
+                  <template slot="items" slot-scope="props">
 
-                        <li
-                          class="flex-item"
-                          data-label="Transfert Compte"
-                          v-if="props.item.transfert_compte"
-                        >
-                          <v-icon color="success">done</v-icon>
-                        </li>
-                        <li class="flex-item" data-label="Transfert Compte" v-else>
-                          <v-icon color="red">clear</v-icon>
-                        </li>
-                      </ul>
-                    </td>
-                  </tr>
-                </template>
-              </v-data-table>
+                    <tr>
+                      <td class="justify-center layout px-0">
+                        <v-btn icon small @click="editItem(props.item)" color="amber">
+                          <v-icon color="white">edit</v-icon>
+                        </v-btn>
+                        <v-btn icon small @click="openDeleteDialog(props.item)" color="red">
+                          <v-icon color="white">delete</v-icon>
+                        </v-btn>
+                      </td>
+                      <td>{{ props.item.societe }}</td>
+                      <td>{{ props.item.banque }}</td>
+                      <td>{{ props.item.compte }}</td>
+                      <td>{{ formatNumber(props.item.total_ht) }}</td>
+                      <td>{{ formatNumber(props.item.total_tva) }}</td>
+                      <td>{{ formatNumber(props.item.total_ttc) }}</td>
+                      <td>{{ props.item.date_reglement }}</td>
+                      <td>{{ props.item.mode_paiement }}</td>
+
+                      <td v-if="props.item.transfert_compte">
+                        <v-icon color="success">done</v-icon>
+                      </td>
+                      <td v-else>
+                        <v-icon color="red">clear</v-icon>
+                      </td>
+                    </tr>
+
+                  </template>
+                </v-data-table>
+
+                <div v-if="isMobile">
+                  <v-data-table :headers="headers" :items="items" :search="search" :hide-headers="isMobile" :pagination.sync="paginationMobile" :class="{mobile: isMobile}">
+                    <template slot="items" slot-scope="props">
+
+                      <tr>
+                        <td>
+                          <ul class="flex-content">
+                            <li class="flex-item" data-label="Modifier">
+                              <v-btn block @click="editItem(props.item)" color="amber">
+                                <v-icon color="white">edit</v-icon>
+                              </v-btn>
+                            </li>
+                            <li class="flex-item" data-label="Supprimer">
+                              <v-btn block @click="openDeleteDialog(props.item)" color="red">
+                                <v-icon color="white">delete</v-icon>
+                              </v-btn>
+                            </li>
+
+                            <li class="flex-item" data-label="Société" style="margin-top:25px">{{ props.item.societe }}</li>
+                            <li class="flex-item" data-label="Banque" style="margin-top:25px">{{ props.item.banque }}</li>
+
+                            <li class="flex-item" data-label="Compte">{{ props.item.compte }}</li>
+                            <li class="flex-item" data-label="Total HT (€)">{{ formatNumber(props.item.total_ht) }}</li>
+                            <li class="flex-item" data-label="Total TVA (€)">{{ formatNumber(props.item.total_tva) }}</li>
+                            <li class="flex-item" data-label="Total TTC (€)">{{ formatNumber(props.item.total_ttc) }}</li>
+                            <li class="flex-item" data-label="Date Règlement">{{ props.item.date_reglement }}</li>
+                            <li class="flex-item" data-label="Mode de Paiement">{{ props.item.mode_paiement }}</li>
+
+                            <li class="flex-item" data-label="Transfert Compte" v-if="props.item.transfert_compte">
+                              <v-icon color="success">done</v-icon>
+                            </li>
+                            <li class="flex-item" data-label="Transfert Compte" v-else>
+                              <v-icon color="red">clear</v-icon>
+                            </li>
+                          </ul>
+                        </td>
+                      </tr>
+
+                    </template>
+                  </v-data-table>
+                </div>
             </v-card>
           </v-card>
         </v-layout>
@@ -394,8 +278,19 @@ export default {
 
   data() {
     return {
+
       pagination: {
+
+        sortBy: "societe",
+        descending: false,
         rowsPerPage: -1
+      },
+
+      paginationMobile: {
+
+        sortBy: "societe",
+        descending: false,
+        rowsPerPage: 5
       },
 
       dialog: false,
@@ -419,9 +314,9 @@ export default {
 
       societyRules: [v => !!v || "Vous devez rentrer une société"],
 
-      bankRules: [v => !!v || "Vous devez selectioner une banque"],
+      bankRules: [v => !!v || "Vous devez sélectionner une banque"],
 
-      accountRules: [v => !!v || "Vous devez selectioner un compte"],
+      accountRules: [v => !!v || "Vous devez sélectionner un compte"],
 
       totalHTRules: [
         v => !!v || "Vous devez rentrer un total HT",
@@ -451,7 +346,7 @@ export default {
       ],
 
       reglementDateRules: [
-        v => !!v || "Vous devez selectioner un date de règlement",
+        v => !!v || "Vous devez sélectionner un date de règlement",
         v =>
           (v &&
             !this.isDateAfterToday(
@@ -465,7 +360,7 @@ export default {
       ],
 
       paymentMethodRules: [
-        v => !!v || "Vous devez selectioner un mode de paiement"
+        v => !!v || "Vous devez sélectionner un mode de paiement"
       ],
 
       snackbar: false,
@@ -535,6 +430,7 @@ export default {
   },
 
   created() {
+    
     this.getItems();
 
     this.getAllSociete();
@@ -676,55 +572,90 @@ export default {
     },
 
     onResize() {
+      
       if (window.innerWidth < 769) {
+
         this.isMobile = true;
-      } else {
+      } 
+      else {
+
         this.isMobile = false;
       }
     },
 
-    formatNumber(number) {
-      if (null != number && undefined != number && "" != number) {
-        number += "";
+    changeSort(column) {
 
-        var splited = number.split(".");
+      console.log(column);
 
-        var number = splited[0];
+       if (this.paginationMobile.sortBy === column) {
 
-        var decimal = splited[1];
+         this.paginationMobile.descending = !this.paginationMobile.descending;
+       } 
+       else {
+         
+          this.paginationMobile.sortBy = column;
+          this.paginationMobile.descending = false;
+       }
+     },
 
-        var formatedNumber = "";
 
-        var p = 1;
+    formatNumber(number){
 
-        for (var i = number.length - 1; i >= 0; i--) {
-          formatedNumber += number.charAt(i);
+            if(null!=number && undefined!=number && ""!=number){
 
-          if (p == 3 && i > 0) {
-            formatedNumber += ".";
+                number += "";
 
-            p = 0;
-          }
+                var splited = number.split(".");
 
-          p++;
-        }
+                var number = splited[0];
 
-        formatedNumber = formatedNumber
-          .split("")
-          .reverse()
-          .join("");
+                var decimal = splited[1];
 
-        if (null != decimal && undefined != decimal && decimal.length != 0) {
-          if (decimal.length > 2) {
-            decimal = decimal.substring(0, 2);
-          }
+                var formatedNumber = "";
 
-          formatedNumber += "," + decimal;
-        }
-      }
+                var p = 1;
 
-      return formatedNumber;
-    },
+                for(var i=number.length-1; i >= 0; i--){
+
+                    formatedNumber += number.charAt(i);
+
+                    if(p==3 && i>0){
+
+                        formatedNumber += ",";
+
+                        p=0;
+                    }
+
+                    p++;
+                }
+
+                formatedNumber = formatedNumber.split("").reverse().join("");
+
+                if(null!=decimal && undefined!=decimal && decimal.length!=0){
+                
+                    if(decimal.length>2){
+
+                        decimal = decimal.substring(0, 2);
+                    }
+                    else if(decimal.length==1){
+
+                        decimal += "0";
+                    }
+
+                    formatedNumber += "." + decimal;
+                }
+                else{
+
+                    formatedNumber += ".00";
+                }
+            }
+            else {
+
+                formatedNumber = "0.00";
+            }
+
+            return formatedNumber;
+        },
 
     onChangeBank: function() {
       var selectedBank = this.editedItem.banque;

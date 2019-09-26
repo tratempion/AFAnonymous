@@ -33,7 +33,7 @@ public class EncaissementContent {
 
         CallApi callApi = new CallApi();
 
-        callApi.setUrl("https://afupeo-staging.azurewebsites.net/api/GetAllEncaissement");
+        callApi.setUrl("https://afupeo.azurewebsites.net/api/GetAllEncaissement");
 
         ObjectMapper mapper = new ObjectMapper();
 

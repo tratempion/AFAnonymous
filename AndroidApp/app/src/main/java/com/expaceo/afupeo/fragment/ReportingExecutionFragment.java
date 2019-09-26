@@ -208,7 +208,7 @@ public class ReportingExecutionFragment extends Fragment {
 
         try {
 
-            URL url = new URL("https://afupeo-staging.azurewebsites.net/api/GetBudgetBilan?annee="+year);
+            URL url = new URL("https://afupeo.azurewebsites.net/api/GetBudgetBilan?annee="+year);
 
             CallApiSync callApiSync = new CallApiSync();
 

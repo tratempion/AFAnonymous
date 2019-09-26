@@ -9,9 +9,11 @@ import 'vuetify/dist/vuetify.min.css'
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+
 import en from 'vuetify/es5/locale/en'
 import fr from 'vuetify/es5/locale/fr'
 Vue.use(BootstrapVue);
+
 Vue.use(Router);
 
 // Prod

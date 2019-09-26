@@ -275,7 +275,7 @@ export default {
             ],
 
             sousClassificationRules: [
-                v => !!v || 'Vous devez selectioner une sous classification'
+                v => !!v || 'Vous devez sélectionner une sous classification'
             ],
 
             budgetRules: [
@@ -458,33 +458,41 @@ export default {
 
                 for(var i=number.length-1; i >= 0; i--){
 
-                formatedNumber += number.charAt(i);
+                    formatedNumber += number.charAt(i);
 
-                if(p==3 && i>0){
+                    if(p==3 && i>0){
 
-                    formatedNumber += ".";
+                        formatedNumber += ",";
 
-                    p=0;
-                }
+                        p=0;
+                    }
 
-                p++;
+                    p++;
                 }
 
                 formatedNumber = formatedNumber.split("").reverse().join("");
 
                 if(null!=decimal && undefined!=decimal && decimal.length!=0){
                 
-                if(decimal.length>2){
+                    if(decimal.length>2){
 
-                    decimal = decimal.substring(0, 2);
+                        decimal = decimal.substring(0, 2);
+                    }
+                    else if(decimal.length==1){
+
+                        decimal += "0";
+                    }
+
+                    formatedNumber += "." + decimal;
                 }
+                else{
 
-                formatedNumber += "," + decimal;
+                    formatedNumber += ".00";
                 }
             }
             else {
 
-                formatedNumber = "0";
+                formatedNumber = "0.00";
             }
 
             return formatedNumber;

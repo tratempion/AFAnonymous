@@ -50,14 +50,15 @@
 
         <v-layout v-resize="onResize" align-baseline="true" row wrap v-else>
 
-
-          <button class="  btn btn-light" style="margin-top:10px;width:100%" v-on:click="exportPDF()">
+          <button class="btn btn-light" style="margin-top:10px; width:100%" v-on:click="exportPDF()">
             Export
-            <img src="../assets/PDF-LOGO.png" width="30" > 
+            <img src="../assets/PDF-LOGO.png" width="30">
           </button>
+
           <v-alert style="width: 100%" :value="true" :type="bilanAnnuelType" v-if="!isMobile">
 
             <v-layout align-center justify-space-between row fill-height>
+
               <v-flex>
                 <h1><strong>Objectif :</strong> {{ formatNumber(objectifAnnuel) }} €</h1>
               </v-flex>
@@ -184,7 +185,7 @@
 
                           <tr v-if="!isMobile">
                             <td>{{ props.item.operation }}</td>
-                            <td>{{ parseFloat(props.item.montant_ttc) }}</td>
+                            <td>{{ formatNumber(parseFloat(props.item.montant_ttc)) }}</td>
                           </tr>
 
                           <tr v-else>
@@ -295,10 +296,11 @@ export default {
     this.refreshBudgetBilan();
   },
   
-  methods: {   
+  methods: {
     exportPDF(){
       window.open(this.$executioEnvironment+'GeneratePDF?annee='+this.selectedYear);
     },
+
     getYear(){
     
       var actualYear = new Date().getFullYear();
@@ -485,53 +487,61 @@ export default {
 
     formatNumber(number){
 
-      if(null!=number && undefined!=number && ""!=number){
+            if(null!=number && undefined!=number && ""!=number){
 
-        number += "";
+                number += "";
 
-        var splited = number.split(".");
+                var splited = number.split(".");
 
-        var number = splited[0];
+                var number = splited[0];
 
-        var decimal = splited[1];
+                var decimal = splited[1];
 
-        var formatedNumber = "";
+                var formatedNumber = "";
 
-        var p = 1;
+                var p = 1;
 
-        for(var i=number.length-1; i >= 0; i--){
+                for(var i=number.length-1; i >= 0; i--){
 
-          formatedNumber += number.charAt(i);
+                    formatedNumber += number.charAt(i);
 
-          if(p==3 && i>0){
+                    if(p==3 && i>0){
 
-            formatedNumber += ".";
+                        formatedNumber += ",";
 
-            p=0;
-          }
+                        p=0;
+                    }
 
-          p++;
-        }
+                    p++;
+                }
 
-        formatedNumber = formatedNumber.split("").reverse().join("");
+                formatedNumber = formatedNumber.split("").reverse().join("");
 
-        if(null!=decimal && undefined!=decimal && decimal.length!=0){
-          
-          if(decimal.length>2){
+                if(null!=decimal && undefined!=decimal && decimal.length!=0){
+                
+                    if(decimal.length>2){
 
-            decimal = decimal.substring(0, 2);
-          }
+                        decimal = decimal.substring(0, 2);
+                    }
+                    else if(decimal.length==1){
 
-          formatedNumber += "," + decimal;
-        }
-      }
-      else {
+                        decimal += "0";
+                    }
 
-        formatedNumber = "0";
-      }
+                    formatedNumber += "." + decimal;
+                }
+                else{
 
-      return formatedNumber;
-    },
+                    formatedNumber += ".00";
+                }
+            }
+            else {
+
+                formatedNumber = "0.00";
+            }
+
+            return formatedNumber;
+        },
 
     formatClassificationName(classificationName){
 

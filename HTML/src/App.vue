@@ -4,6 +4,7 @@
   
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
     <v-app v-resize="onResize">
     
       <v-toolbar dark color="primary" fixed v-if="!isMobile">
@@ -84,7 +85,11 @@
                 </router-link>      
               </v-list-tile>
             </v-list>
-          </v-menu>
+          </v-menu>          
+          
+          <router-link class="white--text" :to="'/admin'" tag="button">
+            <v-btn style="height:100%" flat>Administration</v-btn>
+          </router-link>
           
         </v-toolbar-items>
 
@@ -226,7 +231,18 @@
             <v-list-tile :to="'/reportingExecution'">
               Suivi d'Execution
             </v-list-tile>
-          </v-list-group>
+          </v-list-group>     
+          
+          <v-list-tile :to="'/admin'" tag="button">
+            <v-list-tile-action>
+              <v-icon>build</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>
+                Administration
+              </v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>    
 
         </v-list>
 

@@ -33,7 +33,7 @@ public class DecaissementContent {
 
         CallApi callApi = new CallApi();
 
-        callApi.setUrl("https://afupeo-staging.azurewebsites.net/api/GetValidatedDecaissements");
+        callApi.setUrl("https://afupeo.azurewebsites.net/api/GetValidatedDecaissements");
 
         ObjectMapper mapper = new ObjectMapper();
 

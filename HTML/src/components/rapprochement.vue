@@ -162,9 +162,30 @@
             </v-card>
 
             <v-card>
-              <v-data-table :headers="headers" :items="items" :hide-headers="isMobile" :pagination.sync="pagination" :class="{mobile: isMobile}">
+
+              <v-layout v-if="isMobile" v-resize="onResize" column>
+                <v-menu block offset-y :nudge-left="170" :close-on-content-click="false">
+      
+                  <v-btn block slot="activator" color="amber" dark>
+                    Trier <v-icon>swap_vert</v-icon>
+                  </v-btn>
+        
+                  <v-list>
+                    <v-list-tile v-for="item in headers" :key="item.value" @click="changeSort(item.value)">
+                      <v-list-tile-title>
+                        {{ item.text }}
+                      <v-icon v-if="paginationMobile.sortBy === item.value">{{paginationMobile.descending ? 'arrow_downward':'arrow_upward'}}</v-icon>
+                      </v-list-tile-title>
+                    </v-list-tile>
+                  </v-list>
+            
+                </v-menu>
+              </v-layout>
+
+              <v-data-table :headers="headers" :items="items" :hide-headers="isMobile" :pagination.sync="pagination" :class="{mobile: isMobile}" v-if="!isMobile">
                 <template slot="items" slot-scope="props">
-                  <tr v-if="!isMobile">
+
+                  <tr>
                     <td class="justify-center layout px-0">
                       <v-btn icon small @click="editItem(props.item)" color="amber">
                         <v-icon color="white">edit</v-icon>
@@ -182,34 +203,47 @@
                     <td>{{ props.item.date_valeur }}</td>
                     <td>{{ formatNumber(props.item.montant_ttc) }}</td>
                   </tr>
-                  <tr v-else>
-                    <td>
-                      <ul class="flex-content">
-                        <li class="flex-item" data-label="Modifier">
-                          <v-btn block @click="editItem(props.item)" color="amber">
-                            <v-icon color="white">edit</v-icon>
-                          </v-btn>
-                        </li>
-                        <li class="flex-item" data-label="Rapprocher">
-                          <v-btn block @click="rapprocherItem(props.item)" color="purple">
-                            <v-icon color="white">compare_arrows</v-icon>
-                          </v-btn>
-                        </li>
-
-                        <li class="flex-item" data-label="Opération" style="margin-top:25px">{{ props.item.operation }}</li>
-                        <li class="flex-item" data-label="Banque" style="margin-top:25px">{{ props.item.banque }}</li>
-                        
-                        <li class="flex-item" data-label="Compte">{{ props.item.compte }}</li>
-                        <li class="flex-item" data-label="Mode de Paiement">{{ props.item.mode_paiement }}</li>
-                        <li class="flex-item" data-label="Date Comptabilité">{{ props.item.date_compta }}</li>
-                        <li class="flex-item" data-label="Date Opération">{{ props.item.date_operation }}</li>
-                        <li class="flex-item" data-label="Date Valeur">{{ props.item.date_valeur }}</li>
-                        <li class="flex-item" data-label="Montant TTC (€)">{{ formatNumber(props.item.montant_ttc) }}</li>
-                      </ul>
-                    </td>
-                  </tr>
+                  
                 </template>
               </v-data-table>
+
+              <div v-if="isMobile">
+
+                <v-data-table :headers="headers" :items="items" :hide-headers="isMobile" :pagination.sync="paginationMobile" :class="{mobile: isMobile}">
+                  <template slot="items" slot-scope="props">
+
+                    <tr>
+                      <td>
+                        <ul class="flex-content">
+                          <li class="flex-item" data-label="Modifier">
+                            <v-btn block @click="editItem(props.item)" color="amber">
+                              <v-icon color="white">edit</v-icon>
+                            </v-btn>
+                          </li>
+                          <li class="flex-item" data-label="Rapprocher">
+                            <v-btn block @click="rapprocherItem(props.item)" color="purple">
+                              <v-icon color="white">compare_arrows</v-icon>
+                            </v-btn>
+                          </li>
+
+                          <li class="flex-item" data-label="Opération" style="margin-top:25px">{{ props.item.operation }}</li>
+                          <li class="flex-item" data-label="Banque" style="margin-top:25px">{{ props.item.banque }}</li>
+                          
+                          <li class="flex-item" data-label="Compte">{{ props.item.compte }}</li>
+                          <li class="flex-item" data-label="Mode de Paiement">{{ props.item.mode_paiement }}</li>
+                          <li class="flex-item" data-label="Date Comptabilité">{{ props.item.date_compta }}</li>
+                          <li class="flex-item" data-label="Date Opération">{{ props.item.date_operation }}</li>
+                          <li class="flex-item" data-label="Date Valeur">{{ props.item.date_valeur }}</li>
+                          <li class="flex-item" data-label="Montant TTC (€)">{{ formatNumber(props.item.montant_ttc) }}</li>
+                        </ul>
+                      </td>
+                    </tr>
+
+                  </template>
+                </v-data-table>
+
+              </div>
+
             </v-card>
           </v-card>
         </v-layout>
@@ -234,7 +268,16 @@ export default {
 
       pagination: {
 
+        sortBy: "date_operation",
+        descending: true,
         rowsPerPage: -1
+      },
+
+      paginationMobile: {
+
+        sortBy: "date_operation",
+        descending: true,
+        rowsPerPage: 5
       },
 
       dialog: false,
@@ -251,11 +294,11 @@ export default {
       valid: false,
       
       classificationRules: [        
-        v => !!v || 'Vous devez selectioner une classification'
+        v => !!v || 'Vous devez sélectionner une classification'
       ],
 
       sousClassificationRules: [
-        v => !!v || 'Vous devez selectioner une sous classification'
+        v => !!v || 'Vous devez sélectionner une sous classification'
       ],
 
       moisValeurRules: [
@@ -331,29 +374,29 @@ export default {
       ],
 
       bankRules: [
-        v => !!v || 'Vous devez selectioner une banque'
+        v => !!v || 'Vous devez sélectionner une banque'
       ],
 
       accountRules: [
-        v => !!v || 'Vous devez selectioner un compte'
+        v => !!v || 'Vous devez sélectionner un compte'
       ],
 
       paymentMethodRules: [
-        v => !!v || 'Vous devez selectioner un mode de paiement'
+        v => !!v || 'Vous devez sélectionner un mode de paiement'
       ],
 
       comptaDateRules: [
-        v => !!v || 'Vous devez selectioner un date de comptabilité',
+        v => !!v || 'Vous devez sélectionner un date de comptabilité',
         v => (v && !(this.isDateAfterToday(new Date(parseInt(v.split("-")[0]), parseInt(v.split("-")[1]-1) ,parseInt(v.split("-")[2]))))) || 'La date ne peux pas être dans le futur'
       ],
 
       operationDateRules: [
-        v => !!v || 'Vous devez selectioner une date d\'opération',
+        v => !!v || 'Vous devez sélectionner une date d\'opération',
         v => (v && !(this.isDateAfterToday(new Date(parseInt(v.split("-")[0]), parseInt(v.split("-")[1]-1) ,parseInt(v.split("-")[2]))))) || 'La date ne peux pas être dans le futur'
       ],
 
       valueDateRules: [
-        v => !!v || 'Vous devez selectioner une date de valeur',
+        v => !!v || 'Vous devez sélectionner une date de valeur',
         v => (v && !(this.isDateAfterToday(new Date(parseInt(v.split("-")[0]), parseInt(v.split("-")[1]-1) ,parseInt(v.split("-")[2]))))) || 'La date ne peux pas être dans le futur'
       ],
 
@@ -587,55 +630,78 @@ export default {
       }
     },
 
+    changeSort(column) {
+
+      console.log(column);
+
+       if (this.paginationMobile.sortBy === column) {
+
+         this.paginationMobile.descending = !this.paginationMobile.descending;
+       } 
+       else {
+         
+          this.paginationMobile.sortBy = column;
+          this.paginationMobile.descending = false;
+       }
+     },
+
     formatNumber(number){
 
-      if(null!=number && undefined!=number && ""!=number){
+            if(null!=number && undefined!=number && ""!=number){
 
-        number += "";
+                number += "";
 
-        var splited = number.split(".");
+                var splited = number.split(".");
 
-        var number = splited[0];
+                var number = splited[0];
 
-        var decimal = splited[1];
+                var decimal = splited[1];
 
-        var formatedNumber = "";
+                var formatedNumber = "";
 
-        var p = 1;
+                var p = 1;
 
-        for(var i=number.length-1; i >= 0; i--){
+                for(var i=number.length-1; i >= 0; i--){
 
-          formatedNumber += number.charAt(i);
+                    formatedNumber += number.charAt(i);
 
-          if(p==3 && i>0){
+                    if(p==3 && i>0){
 
-            formatedNumber += ".";
+                        formatedNumber += ",";
 
-            p=0;
-          }
+                        p=0;
+                    }
 
-          p++;
-        }
+                    p++;
+                }
 
-        formatedNumber = formatedNumber.split("").reverse().join("");
+                formatedNumber = formatedNumber.split("").reverse().join("");
 
-        if(null!=decimal && undefined!=decimal && decimal.length!=0){
-          
-          if(decimal.length>2){
+                if(null!=decimal && undefined!=decimal && decimal.length!=0){
+                
+                    if(decimal.length>2){
 
-            decimal = decimal.substring(0, 2);
-          }
+                        decimal = decimal.substring(0, 2);
+                    }
+                    else if(decimal.length==1){
 
-          formatedNumber += "," + decimal;
-        }
-      }
-      else {
+                        decimal += "0";
+                    }
 
-        formatedNumber = "0";
-      }
+                    formatedNumber += "." + decimal;
+                }
+                else{
 
-      return formatedNumber;
-    },
+                    formatedNumber += ".00";
+                }
+            }
+            else {
+
+                formatedNumber = "0.00";
+            }
+
+            return formatedNumber;
+        },
 
     onChangeClassification: function () {
 
