@@ -685,7 +685,7 @@
 
                     <v-data-table :headers="headersBank" :items="allBank" :search="searchBank" :pagination.sync="paginationBank">
 
-                      <template slot="items" slot-scope="props">
+                      <template slot="items" slot-scope="props" v-if()>
 
                         <tr>
 
@@ -1074,17 +1074,22 @@ export default {
 
   created() {
     
-    this.getSociete();
-
-    this.getModePaiement();
+    this.getBankAccount();
 
     this.getClassification();
 
-    this.getBankAccount();
+    this.getSociete();
+    
+    this.getModePaiement();
 
-    this.getBanks();
+    var context = this;
 
-    this.getSousClassification();
+    setTimeout(function(){  
+
+      context.getBanks();
+       
+      context.getSousClassification();
+    }, 337);
 
     this.loading = false;
   },
@@ -1245,36 +1250,12 @@ export default {
       });
     },
 
-    getClassification(){
+    getBankAndBankAccount: function() {
 
-      var urlBankAccountCrudAsset = this.$executioEnvironment+"CrudAsset";
+        getBankAccount().then(returnVal => {
 
-      var data = {
-
-        "asset":"classification",
-        "command":"read"
-      };
-
-      axios.post(urlBankAccountCrudAsset, data, {
-
-        headers: {
-          Accept: "application/json",
-          "Content-type": "application/json"            
-        }
-      })
-      .then(response=>{
-
-        this.allClassification = response.data;
-      })
-      .catch(error => {
-
-        console.log(error);
-
-        (this.snackbar = true),
-          (this.snackbarText =
-            "Erreur lors de la récupération des Classifications dans la Base de Données"),
-          (this.snackbarColor = "error");
-      });
+          getBanks();
+        });
     },
 
     getBankAccount(){
@@ -1327,13 +1308,13 @@ export default {
         }
       })
       .then(response=>{
-                
+           
         this.allBank = response.data;
 
         for(var key in this.allBank){
 
           this.allBank[key].compte = this.getBankAccountNumber(this.allBank[key].default_account);
-        }
+        } 
       })
       .catch(error => {
 
@@ -1342,6 +1323,38 @@ export default {
         (this.snackbar = true),
           (this.snackbarText =
             "Erreur lors de la récupération des Banques dans la Base de Données"),
+          (this.snackbarColor = "error");
+      });
+    },
+
+    getClassification(){
+
+      var urlBankAccountCrudAsset = this.$executioEnvironment+"CrudAsset";
+
+      var data = {
+
+        "asset":"classification",
+        "command":"read"
+      };
+
+      axios.post(urlBankAccountCrudAsset, data, {
+
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json"            
+        }
+      })
+      .then(response=>{
+
+        this.allClassification = response.data;
+      })
+      .catch(error => {
+
+        console.log(error);
+
+        (this.snackbar = true),
+          (this.snackbarText =
+            "Erreur lors de la récupération des Classifications dans la Base de Données"),
           (this.snackbarColor = "error");
       });
     },

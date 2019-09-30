@@ -17,13 +17,13 @@ Vue.use(BootstrapVue);
 Vue.use(Router);
 
 // Prod
-Vue.prototype.$executioEnvironment = 'https://afupeo.azurewebsites.net/api/';
+//Vue.prototype.$executioEnvironment = 'https://afupeo.azurewebsites.net/api/';
 
 // Staging
 //Vue.prototype.$executioEnvironment = 'https://afupeo-staging.azurewebsites.net/api/';
  
 // Localhost
-//Vue.prototype.$executioEnvironment = 'http://localhost:7071/api/';
+Vue.prototype.$executioEnvironment = 'http://localhost:7071/api/';
 
 Vue.use(Vuetify, {
 

@@ -79,9 +79,9 @@
 
             </v-alert>
 
-          </v-layout>        
+          </v-layout>
 
-          <v-layout row wrap style=" background-color: #8BC34A" v-if="!isMobile">
+          <v-layout row wrap style="padding-left:17px; width:101%; background-color: #8BC34A" v-if="!isMobile">
 
             <v-flex>
               <v-text-field dark append-icon="search" label="Société" @input="filterSociete"></v-text-field>
