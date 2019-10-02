@@ -357,10 +357,16 @@ export default {
       ],
 
       amountRules: [
-        v => !!v || "Vous devez rentrer un montant",
+        v => !!v || "Vous devez rentrer un montant ttc",
         v =>
           (v && !isNaN(parseFloat(v)) && isFinite(v)) ||
-          "Le montant doit être un chiffre"
+          "Le montant ttc doit être un chiffre",
+        v =>
+          (v && !this.hasMoreThanTwoDecimal(v)) ||
+          "Le montant ttc ne peux pas avoir plus de deux décimales",
+        v =>
+          (v && !this.isAboveMaxLenght(v)) ||
+          "Le montant ttc doit être plus petit que 1e23"
       ],
 
       snackbar: false,
@@ -458,6 +464,33 @@ export default {
   },
 
   methods: {
+
+    hasMoreThanTwoDecimal(val){
+
+      val += "";
+
+      var splitedTab = val.split(".");
+
+      if(splitedTab.length > 1 && splitedTab[1].length > 2){
+
+        return true;
+      }
+
+      return false;
+    },    
+
+    isAboveMaxLenght(val){
+
+      val += "";
+
+      if(val.length<23){
+
+        return false;
+      }
+      
+      return true;
+    },
+
     getItems() {
       let context = this;
 

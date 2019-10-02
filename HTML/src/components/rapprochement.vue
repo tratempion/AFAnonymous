@@ -47,10 +47,16 @@
                               <v-autocomplete v-model="selectedItem.sous_classification" :items="allUnderClassification" label="Sous Classification" :rules="sousClassificationRules" required></v-autocomplete>
                             </v-flex>
                             <v-flex>
-                              <v-text-field v-on:change="setTvaDeductible" v-model="selectedItem.tva_deductible" :rules="tvaDeductibleRules" label="TVA deductible" required></v-text-field>
+                              <v-autocomplete v-on:change="calculateHtAndTVA" v-model="selectedItem.tvaAmount" :items="allTvaAmount" label="Taux de TVA" item-text="name" return-object :rules="tvaAmountRules" required></v-autocomplete>
                             </v-flex>
                             <v-flex>
-                              <v-text-field v-on:change="setMontantHt" v-model="selectedItem.montant_ht" :rules="montantHTRules" label="Montant HT" required></v-text-field>
+                              <v-text-field v-model="selectedItem.montant_ttc" :rules="montantHTRules" label="Montant TTC" disabled required></v-text-field>
+                            </v-flex>
+                            <v-flex>
+                              <v-text-field v-model="selectedItem.montant_ht" :rules="montantHTRules" label="Montant HT" disabled required></v-text-field>
+                            </v-flex>
+                            <v-flex>
+                              <v-text-field v-model="selectedItem.tva_deductible" :rules="tvaDeductibleRules" label="TVA deductible" disabled required></v-text-field>
                             </v-flex>
                             <v-flex>
                               <v-checkbox v-model="selectedItem.versement_tva" label="Versement TVA"></v-checkbox>
@@ -305,12 +311,15 @@ export default {
         v => !!v || 'Vous devez rentrer un mois de valeur',
         v => (v && !isNaN(parseFloat(v)) && isFinite(v)) || 'Le Mois doit être un chiffre',
         v => (v >= 1 && v <= 12) || 'Le Mois doit être un compris entre 1 et 12'
-      ],
+      ],      
+
+      tvaAmountRules: [v => !!v || "Vous devez sélectionner un taux de TVA"],
 
       montantHTRules: [
         v => !!v || 'Vous devez rentrer un montant HT',
         v => (v && !isNaN(parseFloat(v)) && isFinite(v)) || 'Le montant HT doit être un chiffre',
-        v => (v && (parseInt(this.selectedItem.montant_ht) <= parseInt(this.selectedItem.montant_ttc))) || 'Le montant HT ne peut pas être suppérieur au montant TTC'
+        v => (v && (parseInt(this.selectedItem.montant_ht) <= parseInt(this.selectedItem.montant_ttc))) || 'Le montant HT ne peut pas être suppérieur au montant TTC',
+        v => (v && v.length<23) || "Le montant TTC doit être plus petit que 1e23"
       ],
 
       tvaDeductibleRules: [
@@ -401,8 +410,14 @@ export default {
       ],
 
       amountRules: [
-        v => !!v || 'Vous devez rentrer un montant',
-        v => (v && !isNaN(parseFloat(v)) && isFinite(v)) || 'Le montant doit être un chiffre'
+        v => !!v || 'Vous devez rentrer un montant ttc',
+        v => (v && !isNaN(parseFloat(v)) && isFinite(v)) || 'Le montant ttc doit être un chiffre',
+        v =>
+          (v && !this.hasMoreThanTwoDecimal(v)) ||
+          "Le montant ttc ne peux pas avoir plus de deux décimales",
+        v =>
+          (v && !this.isAboveMaxLenght(v)) ||
+          "Le montant ttc doit être plus petit que 1e23"
       ],
       
       menuDateComptabilite: false,
@@ -410,7 +425,26 @@ export default {
       menuDateValeur: false,
 
       allBank: [],
-      allBankAccount: [],
+      allBankAccount: [],      
+
+      allTvaAmount: [
+        {
+          "name":"Taux Normal : 20%",
+          "percentage":20
+        },
+        {
+          "name":"Taux Réduit : 10%",
+          "percentage":10
+        },
+        {
+          "name":"Taux Réduit : 5,5%",
+          "percentage":5.5
+        },
+        {
+          "name":"Taux Particulier : 2,1%",
+          "percentage":2.1
+        }
+      ],
 
       allPaymentMode: [],
 
@@ -424,6 +458,7 @@ export default {
         date_compta: "",
         date_operation: "",
         date_valeur: "",
+        tvaAmount: "",
         montant_ttc: "",
         classification: "",
         sous_classification: "",
@@ -443,6 +478,7 @@ export default {
         date_compta: "",
         date_operation: "",
         date_valeur: "",
+        tvaAmount: "",
         montant_ttc: "",
         classification: "",
         sous_classification: "",
@@ -471,14 +507,6 @@ export default {
 
     dialog(val) {
 
-      if(val){
-
-        this.selectedItem.montant_ht = this.selectedItem.montant_ttc;
-        this.selectedItem.tva_deductible = "0";
-
-        this.reRenderKey += 1;
-      }
-
       val || this.close();
       
       this.$refs.form.resetValidation();
@@ -506,24 +534,52 @@ export default {
       }
     },
 
-    setTvaDeductible(val){
+    hasMoreThanTwoDecimal(val){
 
-      if(this.selectedItem.montant_ttc-val>=0) {
+      val += "";
 
-        this.selectedItem.montant_ht = this.selectedItem.montant_ttc-val;
+      var splitedTab = val.split(".");
 
-        this.reRenderKey += 1;
+      if(splitedTab.length > 1 && splitedTab[1].length > 2){
+
+        return true;
       }
+
+      return false;
+    },   
+
+    isAboveMaxLenght(val){
+
+      val += "";
+
+      if(val.length<23){
+
+        return false;
+      }
+      
+      return true;
     },
 
-    setMontantHt(val){
+    calculateHtAndTVA(){
 
-      if(this.selectedItem.montant_ttc-val>=0) {
-        
-        this.selectedItem.tva_deductible = this.selectedItem.montant_ttc-val;
-                        
-        this.reRenderKey += 1;
-      }   
+      if(this.selectedItem.montant_ttc <= 99999999999999999999999){
+
+        var tvaPercentage = this.selectedItem.tvaAmount.percentage;
+
+        if( this.selectedItem.tvaAmount && 
+          this.selectedItem.tvaAmount != null &&
+          this.selectedItem.montant_ttc && 
+          this.selectedItem.montant_ttc != null &&
+          this.selectedItem.montant_ttc > 0
+        ){
+
+          this.selectedItem.tva_deductible = this.formatNumber( Math.round( (this.selectedItem.montant_ttc * (tvaPercentage/100)) * 1000) / 1000).replace(",", "");
+
+          this.selectedItem.montant_ht = this.formatNumber( Math.round( (this.selectedItem.montant_ttc - this.selectedItem.tva_deductible) * 1000) / 1000 ).replace(",", "");
+          
+          this.reRenderKey += 1;
+        }
+      }
     },
 
     getItems(){

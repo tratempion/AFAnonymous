@@ -68,13 +68,16 @@
                             <v-autocomplete v-model="editedItem.compte" :items="allBankAccount" label="Compte" :rules="accountRules" required></v-autocomplete>
                           </v-flex>
                           <v-flex>
-                            <v-text-field v-on:change="setTotalTva" v-model="editedItem.total_ttc" label="Total TTC (€)" :rules="totalTTCRules" required></v-text-field>
+                            <v-autocomplete v-on:change="calculateHtAndTVA" v-model="editedItem.tvaAmount" :items="allTvaAmount" label="Taux de TVA" item-text="name" return-object :rules="tvaAmountRules" required></v-autocomplete>
                           </v-flex>
                           <v-flex>
-                            <v-text-field v-on:change="setTotalTva" v-model="editedItem.total_ht" label="Total HT (€)" :rules="totalHTRules" required></v-text-field>
+                            <v-text-field v-on:change="calculateHtAndTVA" v-model="editedItem.total_ttc" label="Total TTC (€)" :rules="totalTTCRules" required></v-text-field>
                           </v-flex>
                           <v-flex>
-                            <v-text-field v-on:change="setTotalHt" v-model="editedItem.total_tva" label="Total TVA (€)" :rules="totalTVARules" required></v-text-field>
+                            <v-text-field v-model="editedItem.total_ht" label="Total HT (€)" disabled required></v-text-field>
+                          </v-flex>
+                          <v-flex>
+                            <v-text-field v-model="editedItem.total_tva" label="Total TVA (€)" :rules="totalTVARules" disabled required></v-text-field>
                           </v-flex>
                           <v-flex>
                             <v-menu v-model="menuDateReglement" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width min-width="290px">
@@ -318,12 +321,7 @@ export default {
 
       accountRules: [v => !!v || "Vous devez sélectionner un compte"],
 
-      totalHTRules: [
-        v => !!v || "Vous devez rentrer un total HT",
-        v =>
-          (v && !isNaN(parseFloat(v)) && isFinite(v)) ||
-          "Le total HT doit être un chiffre"
-      ],
+      tvaAmountRules: [v => !!v || "Vous devez sélectionner un taux de TVA"],
 
       totalTTCRules: [
         v => !!v || "Vous devez rentrer un total TTC",
@@ -331,18 +329,16 @@ export default {
           (v && !isNaN(parseFloat(v)) && isFinite(v)) ||
           "Le total TTC doit être un chiffre",
         v =>
-          (v &&
-            parseInt(this.editedItem.total_ttc) ==
-              parseInt(this.editedItem.total_ht) +
-                parseInt(this.editedItem.total_tva)) ||
-          "Le total TTC doit être égal au total HT + TVA"
+          (v && !this.hasMoreThanTwoDecimal(v)) ||
+          "Le total TTC ne peux pas avoir plus de deux décimales",
+        v =>
+          (v && !this.isAboveMaxLenght(v)) ||
+          "Le total TTC doit être plus petit que 1e23"
+          
       ],
 
       totalTVARules: [
-        v => !!v || "Vous devez rentrer un total TVA",
-        v =>
-          (v && !isNaN(parseFloat(v)) && isFinite(v)) ||
-          "Le total TVA doit être un chiffre"
+        v => !!v || "Rentrez un Total TTC et un Taux de TVA calculera automatiquement le total HT et TVA"
       ],
 
       reglementDateRules: [
@@ -397,6 +393,29 @@ export default {
       allBank: [],
       allBankAccount: [],
 
+      allTvaAmount: [
+        {
+          "name":"Remboursement Crédit TVA Etat : 100%",
+          "percentage":100
+        },
+        {
+          "name":"Taux Normal : 20%",
+          "percentage":20
+        },
+        {
+          "name":"Taux Réduit : 10%",
+          "percentage":10
+        },
+        {
+          "name":"Taux Réduit : 5,5%",
+          "percentage":5.5
+        },
+        {
+          "name":"Taux Particulier : 2,1%",
+          "percentage":2.1
+        }
+      ],
+
       allPaymentMode: [],
 
       editedItem: {
@@ -404,6 +423,7 @@ export default {
         societe: "",
         banque: "",
         compte: "",
+        tvaAmount: "",
         total_ht: "",
         total_ttc: "",
         total_tva: "",
@@ -417,6 +437,7 @@ export default {
         societe: "",
         banque: "",
         compte: "",
+        tvaAmount: "",
         total_ht: "",
         total_ttc: "",
         total_tva: "",
@@ -463,6 +484,64 @@ export default {
   },
 
   methods: {
+
+    hasMoreThanTwoDecimal(val){
+
+      val += "";
+
+      var splitedTab = val.split(".");
+
+      if(splitedTab.length > 1 && splitedTab[1].length > 2){
+
+        return true;
+      }
+
+      return false;
+    },
+
+    isAboveMaxLenght(val){
+
+      val += "";
+
+      if(val.length<23){
+
+        return false;
+      }
+      
+      return true;
+    },
+
+    calculateHtAndTVA(){
+
+      if(this.editedItem.total_ttc <= 99999999999999999999999){
+
+        var tvaPercentage = this.editedItem.tvaAmount.percentage;
+
+        if( this.editedItem.tvaAmount && 
+          this.editedItem.tvaAmount != null &&
+          this.editedItem.total_ttc && 
+          this.editedItem.total_ttc != null &&
+          this.editedItem.total_ttc > 0
+        ){
+
+          if(tvaPercentage==100){
+
+            this.editedItem.total_tva = this.editedItem.total_ttc;
+
+            this.editedItem.total_ht = 0;
+          }
+          else{
+
+            this.editedItem.total_tva = this.formatNumber(Math.round( (this.editedItem.total_ttc * (tvaPercentage/100)) * 1000) / 1000).replace(",", "");
+
+            this.editedItem.total_ht = this.formatNumber(Math.round( (this.editedItem.total_ttc - this.editedItem.total_tva ) * 1000) / 1000).replace(",", "");
+          }
+        }
+      }
+
+      this.$refs.form.validate();
+    },
+    
     setTotalHt(val) {
       if (
         this.editedItem.total_ttc &&

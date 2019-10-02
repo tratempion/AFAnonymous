@@ -87,8 +87,8 @@
             </v-list>
           </v-menu>          
           
-          <router-link class="white--text" :to="'/admin'" tag="button">
-            <v-btn style="height:100%" flat>Administration</v-btn>
+          <router-link class="white--text" :to="'/dataManagement'" tag="button">
+            <v-btn style="height:100%" flat>Gestion des Données</v-btn>
           </router-link>
           
         </v-toolbar-items>
@@ -233,13 +233,13 @@
             </v-list-tile>
           </v-list-group>     
           
-          <v-list-tile :to="'/admin'" tag="button">
+          <v-list-tile :to="'/dataManagement'" tag="button">
             <v-list-tile-action>
               <v-icon>build</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>
-                Administration
+                Gestion des Données
               </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>    

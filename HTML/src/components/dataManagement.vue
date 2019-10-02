@@ -859,7 +859,7 @@ const axios = require("axios");
 
 export default {
 
-  name: "admin",
+  name: "dataManagement",
 
   data() {
 
@@ -1089,7 +1089,7 @@ export default {
       context.getBanks();
        
       context.getSousClassification();
-    }, 337);
+    }, 777);
 
     this.loading = false;
   },
