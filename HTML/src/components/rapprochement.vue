@@ -417,7 +417,7 @@ export default {
           "Le montant ttc ne peux pas avoir plus de deux décimales",
         v =>
           (v && !this.isAboveMaxLenght(v)) ||
-          "Le montant ttc doit être plus petit que 1e23"
+          "Le montant ttc doit être plus petit que 1e22"
       ],
       
       menuDateComptabilite: false,
@@ -552,7 +552,7 @@ export default {
 
       val += "";
 
-      if(val.length<23){
+      if(val.length<22){
 
         return false;
       }
@@ -573,9 +573,9 @@ export default {
           this.selectedItem.montant_ttc > 0
         ){
 
-          this.selectedItem.tva_deductible = this.formatNumber( Math.round( (this.selectedItem.montant_ttc * (tvaPercentage/100)) * 1000) / 1000).replace(",", "");
+          this.selectedItem.tva_deductible = this.formatNumber( Math.round( (this.selectedItem.montant_ttc * (tvaPercentage/100)) * 1000) / 1000).split(",").join("");
 
-          this.selectedItem.montant_ht = this.formatNumber( Math.round( (this.selectedItem.montant_ttc - this.selectedItem.tva_deductible) * 1000) / 1000 ).replace(",", "");
+          this.selectedItem.montant_ht = this.formatNumber( Math.round( (this.selectedItem.montant_ttc - this.selectedItem.tva_deductible) * 1000) / 1000 ).split(",").join("");
           
           this.reRenderKey += 1;
         }

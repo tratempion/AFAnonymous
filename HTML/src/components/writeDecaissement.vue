@@ -366,7 +366,7 @@ export default {
           "Le montant ttc ne peux pas avoir plus de deux décimales",
         v =>
           (v && !this.isAboveMaxLenght(v)) ||
-          "Le montant ttc doit être plus petit que 1e23"
+          "Le montant ttc doit être plus petit que 1e22"
       ],
 
       snackbar: false,
@@ -483,7 +483,7 @@ export default {
 
       val += "";
 
-      if(val.length<23){
+      if(val.length<22){
 
         return false;
       }
@@ -492,31 +492,30 @@ export default {
     },
 
     getItems() {
+
       let context = this;
 
       var url = this.$executioEnvironment + "getDraftDecaissements";
 
-      axios
-        .get(url)
-        .then(function(response) {
-          for (var key in response.data) {
-            response.data[key].date_valeur = response.data[
-              key
-            ].date_valeur.split("T")[0];
-            response.data[key].date_compta = response.data[
-              key
-            ].date_compta.split("T")[0];
-            response.data[key].date_operation = response.data[
-              key
-            ].date_operation.split("T")[0];
-          }
+      axios.get(url).then(function(response) {
 
-          context.items = response.data;
-          context.loading = false;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+        for (var key in response.data) {
+
+          response.data[key].date_valeur = response.data[key].date_valeur.split("T")[0];
+
+          response.data[key].date_compta = response.data[key].date_compta.split("T")[0];
+
+          response.data[key].date_operation = response.data[key].date_operation.split("T")[0];
+        }
+
+        context.items = response.data;
+        
+        context.loading = false;
+      })
+      .catch(function(error) {
+
+        console.log(error);
+      });
     },
 
     getBanks() {

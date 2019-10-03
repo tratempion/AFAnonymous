@@ -333,7 +333,7 @@ export default {
           "Le total TTC ne peux pas avoir plus de deux décimales",
         v =>
           (v && !this.isAboveMaxLenght(v)) ||
-          "Le total TTC doit être plus petit que 1e23"
+          "Le total TTC doit être plus petit que 1e22"
           
       ],
 
@@ -503,7 +503,7 @@ export default {
 
       val += "";
 
-      if(val.length<23){
+      if(val.length<22){
 
         return false;
       }
@@ -532,9 +532,9 @@ export default {
           }
           else{
 
-            this.editedItem.total_tva = this.formatNumber(Math.round( (this.editedItem.total_ttc * (tvaPercentage/100)) * 1000) / 1000).replace(",", "");
+            this.editedItem.total_tva = this.formatNumber(Math.round( (this.editedItem.total_ttc * (tvaPercentage/100)) * 1000) / 1000).split(",").join("");
 
-            this.editedItem.total_ht = this.formatNumber(Math.round( (this.editedItem.total_ttc - this.editedItem.total_tva ) * 1000) / 1000).replace(",", "");
+            this.editedItem.total_ht = this.formatNumber(Math.round( (this.editedItem.total_ttc - this.editedItem.total_tva ) * 1000) / 1000).split(",").join("");
           }
         }
       }
@@ -569,25 +569,40 @@ export default {
     },
 
     getItems() {
+
       let context = this;
 
       var url = this.$executioEnvironment + "GetAllEncaissement";
 
-      axios
-        .get(url)
-        .then(function(response) {
+      axios.get(url).then(function(response) {
+
           for (var key in response.data) {
-            response.data[key].date_reglement = response.data[
-              key
-            ].date_reglement.split("T")[0];
+
+            response.data[key].date_reglement = response.data[key].date_reglement.split("T")[0];
+
+            response.data[key].tvaAmount = context.guessTvaAmount(response.data[key]);
           }
 
           context.items = response.data;
           context.loading = false;
         })
         .catch(function(error) {
+
           console.log(error);
         });
+    },
+
+    guessTvaAmount(item){
+
+      for(var key in this.allTvaAmount){
+
+        var calculatedTva = this.formatNumber(Math.round( (item.total_ttc * (this.allTvaAmount[key].percentage/100)) * 1000) / 1000).split(",").join("");
+
+        if(item.total_tva == calculatedTva){
+
+          return this.allTvaAmount[key];
+        }
+      }
     },
 
     getAllSociete() {
