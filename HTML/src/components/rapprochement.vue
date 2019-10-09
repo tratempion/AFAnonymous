@@ -50,13 +50,13 @@
                               <v-autocomplete v-on:change="calculateHtAndTVA" v-model="selectedItem.tvaAmount" :items="allTvaAmount" label="Taux de TVA" item-text="name" return-object :rules="tvaAmountRules" required></v-autocomplete>
                             </v-flex>
                             <v-flex>
-                              <v-text-field v-model="selectedItem.montant_ttc" :rules="montantHTRules" label="Montant TTC" disabled required></v-text-field>
+                              <v-text-field v-model="selectedItem.montant_ttc" label="Montant TTC" disabled></v-text-field>
                             </v-flex>
                             <v-flex>
-                              <v-text-field v-model="selectedItem.montant_ht" :rules="montantHTRules" label="Montant HT" disabled required></v-text-field>
+                              <v-text-field v-model="selectedItem.montant_ht" label="Montant HT" disabled></v-text-field>
                             </v-flex>
                             <v-flex>
-                              <v-text-field v-model="selectedItem.tva_deductible" :rules="tvaDeductibleRules" label="TVA deductible" disabled required></v-text-field>
+                              <v-text-field v-model="selectedItem.tva_deductible" label="TVA deductible" disabled></v-text-field>
                             </v-flex>
                             <v-flex>
                               <v-checkbox v-model="selectedItem.versement_tva" label="Versement TVA"></v-checkbox>

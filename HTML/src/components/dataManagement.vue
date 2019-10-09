@@ -1089,7 +1089,17 @@ export default {
       context.getBanks();
        
       context.getSousClassification();
-    }, 777);
+    }, 1117);
+
+    if(this.allBank.length==0){
+
+      this.getBanks();
+    }
+
+    if(this.allSousClassification.length==0){
+
+      this.getSousClassification();
+    }
 
     this.loading = false;
   },

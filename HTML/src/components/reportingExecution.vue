@@ -50,10 +50,15 @@
 
         <v-layout v-resize="onResize" align-baseline="true" row wrap v-else>
 
-          <button class="btn btn-light" style="margin-top:10px; width:100%" v-on:click="exportPDF()">
-            Export
-            <img src="../assets/PDF-LOGO.png" width="30">
-          </button>
+          <v-btn v-if="!isMobile" outline block large round color="error" v-on:click="exportPDF()">
+            Exporter au Format PDF 
+            <v-icon right dark>description</v-icon>
+          </v-btn>
+
+          <v-btn v-else outline block large round color="error" v-on:click="exportPDF()">
+            Exporter au Format PDF 
+            <v-icon right dark>description</v-icon>
+          </v-btn>
 
           <v-alert style="width: 100%" :value="true" :type="bilanAnnuelType" v-if="!isMobile">
 

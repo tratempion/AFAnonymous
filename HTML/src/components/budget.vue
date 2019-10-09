@@ -97,7 +97,9 @@
                                                             </v-btn>
                                                         </li>
 
-                                                        <li class="flex-item" data-label="Sous Classification" style="margin-top:25px">{{ props.item.sous_classification }}</li>
+                                                        <li v-if="!verifyUnderClassificationLength(props.item.sous_classification)" class="flex-item" data-label="Sous Classification" style="margin-top:25px">{{ props.item.sous_classification }}</li>
+                                                        <li v-else class="flex-item" data-label="Sous Classification" style="margin-top:25px; height: 70px">{{ props.item.sous_classification }}</li>
+                                                        
                                                         <li class="flex-item" data-label="Budget" style="margin-top:25px;margin-bottom:10px;">{{ formatNumber(props.item.budget) }}</li>
                                                         
                                                     </ul>
@@ -496,6 +498,17 @@ export default {
             }
 
             return formatedNumber;
+        },
+        
+
+        verifyUnderClassificationLength(val){
+
+            if(val.length>44){
+
+                return true;
+            }
+
+            return false;
         },
         
         addNewBudget(month) {

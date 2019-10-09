@@ -234,8 +234,12 @@
                       <li class="flex-item" data-label="Versement TVA" v-if="props.item.versement_tva"><v-icon color="success">done</v-icon></li>
                       <li class="flex-item" data-label="Versement TVA" v-else><v-icon color="red">clear</v-icon></li>
                       
-                      <li class="flex-item" data-label="Classification">{{ props.item.classification }}</li>
-                      <li class="flex-item" data-label="Sous Classification">{{ props.item.sous_classification }}</li>
+                      <li v-if="!verifyClassificationLength(props.item.classification)" class="flex-item" data-label="Classification">{{ props.item.classification }}</li>
+                      <li v-else wrap style="height: 55px" class="flex-item" data-label="Classification">{{ makeClassificationLength(props.item.classification) }}</li>
+
+                      <li v-if="!verifyUnderClassificationLength(props.item.sous_classification)" class="flex-item" data-label="Sous Classification">{{ props.item.sous_classification }}</li>
+                      <li v-else style="height: 70px" class="flex-item" data-label="Sous Classification">{{ props.item.sous_classification }}</li>
+
                       <li class="flex-item" data-label="Details">{{ props.item.details }}</li>
 
                       <li class="flex-item" data-label="Facture Verifiée" v-if="props.item.facture_verifie"><v-icon color="success">done</v-icon></li>
@@ -403,61 +407,110 @@ export default {
 
     formatNumber(number){
 
-            if(null!=number && undefined!=number && ""!=number){
+      if(null!=number && undefined!=number && ""!=number){
 
-                number += "";
+        number += "";
 
-                var splited = number.split(".");
+        var splited = number.split(".");
 
-                var number = splited[0];
+        var number = splited[0];
 
-                var decimal = splited[1];
+        var decimal = splited[1];
 
-                var formatedNumber = "";
+        var formatedNumber = "";
 
-                var p = 1;
+        var p = 1;
 
-                for(var i=number.length-1; i >= 0; i--){
+        for(var i=number.length-1; i >= 0; i--){
 
-                    formatedNumber += number.charAt(i);
+          formatedNumber += number.charAt(i);
 
-                    if(p==3 && i>0){
+          if(p==3 && i>0){
 
-                        formatedNumber += ",";
+            formatedNumber += ",";
 
-                        p=0;
-                    }
+            p=0;
+          }
 
-                    p++;
-                }
+          p++;
+        }
 
-                formatedNumber = formatedNumber.split("").reverse().join("");
+        formatedNumber = formatedNumber.split("").reverse().join("");
 
-                if(null!=decimal && undefined!=decimal && decimal.length!=0){
+        if(null!=decimal && undefined!=decimal && decimal.length!=0){
                 
-                    if(decimal.length>2){
+          if(decimal.length>2){
 
-                        decimal = decimal.substring(0, 2);
-                    }
-                    else if(decimal.length==1){
+            decimal = decimal.substring(0, 2);
+          }
+          else if(decimal.length==1){
 
-                        decimal += "0";
-                    }
+            decimal += "0";
+          }
 
-                    formatedNumber += "." + decimal;
-                }
-                else{
+          formatedNumber += "." + decimal;
+        }
+        else{
 
-                    formatedNumber += ".00";
-                }
-            }
-            else {
+          formatedNumber += ".00";
+        }
+      }
+      else {
 
-                formatedNumber = "0.00";
-            }
+        formatedNumber = "0.00";
+      }
 
-            return formatedNumber;
-        },
+      return formatedNumber;
+    },
+
+    verifyClassificationLength(val){
+
+      if(val.length>24){
+
+        return true;
+      }
+
+      return false;
+    },
+
+    makeClassificationLength(val){
+
+      var splited = val.split("_");
+
+      var output = splited[0];
+
+      splited.splice(0, 1);
+
+      var actualLineLength = output.length;
+
+      for(var key in splited){
+
+        if( (actualLineLength + splited[key].length) < 24){
+
+          output += "_" + splited[key];
+
+          actualLineLength += splited[key].length;
+        }
+        else {
+
+          output += "_ " + splited[key];          
+
+          actualLineLength = splited[key].length;
+        }
+      }
+
+      return output;
+    },
+
+    verifyUnderClassificationLength(val){
+
+      if(val.length>44){
+
+        return true;
+      }
+
+      return false;
+    },
 
     toggleAll() {
 

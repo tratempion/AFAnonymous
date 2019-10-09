@@ -35,7 +35,7 @@
     "url-loader": "^1.1.2",
     "vue-chartjs": "^3.4.2",
     "vue-google-charts": "^0.3.2",
-    "vue-morris": "^1.0.1",
+    "vue-morris": "^1.1.0",
     "vuetify": "^1.5.14",
     "webpack-encoding-plugin": "^0.3.1"
   }
