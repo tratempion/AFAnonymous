@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Threading.Tasks;
 using RestSharp;
+using System.Globalization;
 
 namespace DAL
 {
@@ -189,7 +190,54 @@ namespace DAL
             if (dictionnaire["budget"] != null) dictionnaire["budget"] = ((string)budgetDTO.budget).Split(',')[0].Replace(" ", "").Replace("€", "").Replace("-", "").Trim();
             return sqlManager.ExecProcedure("SaveBudget", dictionnaire);
         }
+        public string toMoneyEuros(double amount)
+        {
+            string unformatedAmount = amount.ToString();
+            string[] splited;
+            if (unformatedAmount.Contains(','))
+            {
+                splited = unformatedAmount.Split(',');
 
+            }else
+            {
+                splited = unformatedAmount.Split('.');
+            }
+            var money = splited[0];
+            var toReverse = money.ToCharArray();
+            Array.Reverse(toReverse);
+            money = new String(toReverse);
+            string centimes ="";
+            if (splited.Length > 1)
+            {
+                centimes ="."+ splited[1];
+            }
+            string subMoney ="";
+            int spaceCount = 0;
+
+            if (money.Length > 0)
+            {
+                subMoney+=money[0];
+            }
+            else
+            {
+                subMoney+='0';
+            }
+            for (int i = 1;i<money.Length;i++)
+            {
+                if (i % 3 == 0 && money[i] !='-')
+                {
+                    subMoney+= ",";
+                }
+                subMoney += money[i];
+
+            }
+            toReverse = subMoney.ToCharArray();
+            Array.Reverse(toReverse);
+            money = new String(toReverse);
+            money=money.Replace(" ", "&nbsp");
+
+            return money+centimes+"&nbsp€";
+        }
         private string GetHtml(string annee)
         {
             var budgetBilan = new Dictionary<string, Dictionary<string, tmpClassSousCLassification>>();
@@ -254,11 +302,11 @@ namespace DAL
                 double totalObjectifClassif = 0;
                 foreach (var sousClassif in classif.Value)
                 {
-                    totalObjectifClassif += double.Parse(sousClassif.Value.objectif.Replace('.', ','));
+                    totalObjectifClassif += double.Parse(sousClassif.Value.objectif);
                     foreach (var decaissement in sousClassif.Value.decaissements)
                     {
 
-                        totalDecaissementClassif += double.Parse(decaissement.montant_ttc.Replace('.', ','));
+                        totalDecaissementClassif += double.Parse(decaissement.montant_ttc);
                     }
 
                 }
@@ -275,19 +323,19 @@ namespace DAL
 
                 }
                 html += "<td style=\"font-size: 11pt\">" + classif.Key + "</td>";
-                html += "<td style=\"font-size: 11pt\">" + totalObjectifClassif.ToString("C0").Replace(" €","&nbsp€") + " </td>";
-                html += "<td style=\"font-size: 11pt\">" + totalDecaissementClassif.ToString("C0").Replace(" €", "&nbsp€") + "</td>";
-                html += "<td style=\"font-size: 11pt\">" + (totalObjectifClassif - totalDecaissementClassif).ToString("C0").Replace(" €", "&nbsp€") + "</td>";
+                html += "<td style=\"font-size: 11pt\">" + toMoneyEuros(totalObjectifClassif) + " </td>";
+                html += "<td style=\"font-size: 11pt\">" + toMoneyEuros(totalDecaissementClassif) + "</td>";
+                html += "<td style=\"font-size: 11pt\">" + toMoneyEuros((totalObjectifClassif - totalDecaissementClassif)) + "</td>";
                 html += "</tr>";
 
 
                 foreach (var sousClassif in classif.Value)
                 {
                     totalDecaissementClassif = 0;
-                    totalObjectifClassif = double.Parse(sousClassif.Value.objectif.Replace('.', ','));
+                    totalObjectifClassif = double.Parse(sousClassif.Value.objectif);
                     foreach (var decaissement in sousClassif.Value.decaissements)
                     {
-                        totalDecaissementClassif += double.Parse(decaissement.montant_ttc.Replace('.', ','));
+                        totalDecaissementClassif += double.Parse(decaissement.montant_ttc);
                     }
                     if (totalDecaissementClassif > totalObjectifClassif)
                     {
@@ -299,9 +347,9 @@ namespace DAL
 
                     }
                     html += "<td>&nbsp;&nbsp;&nbsp;&nbsp;" + sousClassif.Key + "</td>";
-                    html += "<td>" + totalObjectifClassif.ToString("C0").Replace(" €", "&nbsp€") + "</td>";
-                    html += "<td>" + totalDecaissementClassif.ToString("C0").Replace(" €", "&nbsp€") + "</td>";
-                    html += "<td>" + (totalObjectifClassif - totalDecaissementClassif).ToString("C0").Replace(" €", "&nbsp€") + "</td>";
+                    html += "<td>" + toMoneyEuros(totalObjectifClassif) + "</td>";
+                    html += "<td>" + toMoneyEuros(totalDecaissementClassif) + "</td>";
+                    html += "<td>" + toMoneyEuros((totalObjectifClassif - totalDecaissementClassif)) + "</td>";
                     html += "</tr>";
 
                 }
@@ -325,13 +373,13 @@ namespace DAL
 
                                 <tr>
 
-                                    <td> " + totalObjectif.ToString("C0").Replace(" €", "&nbsp€") + @" </td>
+                                    <td> " + toMoneyEuros(totalObjectif) + @" </td>
 
 
-                                    <td> " + totalDecaissement.ToString("C0").Replace(" €", "&nbsp€") + @" </td>
+                                    <td> " + toMoneyEuros(totalDecaissement) + @" </td>
 
 
-                                    <td> " + (totalObjectif - totalDecaissement).ToString("C0").Replace(" €", "&nbsp€") + @" </td>
+                                    <td> " + toMoneyEuros((totalObjectif - totalDecaissement)) + @" </td>
 
 
                                 </tr>
